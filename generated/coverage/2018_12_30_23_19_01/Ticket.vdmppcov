@@ -17,13 +17,7 @@ operations
 	post owner = o and event = e and id = count - 1 ;
 	
 	public getOwner : () ==> seq of char
-	getOwner() == (return owner;);
-	
-	public getEvent : () ==> seq of char
-	getEvent() == (return event;);
-	
-	public getID : () ==> nat
-	getID() == (return id;);
+	getOwner() == (return owner;)
 			 
 functions
 -- TODO Define functiones here
