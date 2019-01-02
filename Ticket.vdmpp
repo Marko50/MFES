@@ -1,25 +1,26 @@
 class Ticket
 types
 -- TODO Define types here
+	public String = seq of char;
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-	private owner : seq of char;
-	private event : seq of char;
+	private owner : String;
+	private event : String;
 	private id: nat; 
 	static count : nat := 0;
 operations
 -- TODO Define operations here
-	public Ticket: seq of char * seq of char ==> Ticket
+	public Ticket: String * String ==> Ticket
 	Ticket(o,e) == (owner := o; event := e; id := count; count := count + 1 ; return self;)
 	pre count >= 0
 	post owner = o and event = e and id = count - 1 ;
 	
-	public getOwner : () ==> seq of char
+	public getOwner : () ==> String
 	getOwner() == (return owner;);
 	
-	public getEvent : () ==> seq of char
+	public getEvent : () ==> String
 	getEvent() == (return event;);
 	
 	public getID : () ==> nat
