@@ -1,4 +1,4 @@
-class EventManager
+class Date
 types
 -- TODO Define types here
 values
@@ -11,4 +11,4 @@ functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end EventManager
+end Date
