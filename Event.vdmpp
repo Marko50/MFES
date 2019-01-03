@@ -9,7 +9,7 @@ instance variables
 	private name : String;
 	private id : nat;
 	private capacity : nat;
-	private tickets : set of Ticket := {};
+	private tickets : map nat to Ticket := {|->};
 	static count : nat := 0;
 operations
 -- TODO Define operations here
@@ -23,24 +23,7 @@ operations
 	)
 	pre count >= 0
 	post name = n and capacity = c and tickets = {};
-	
-	public addTicket : Ticket ==> ()
-	addTicket(t) == (
-		tickets := tickets union {t};
-		capacity := capacity - 1;
-	)
-	pre card tickets < capacity
-	post tickets = tickets~ union {t};	
-	
---	public removeTicket : nat ==> ()
---	removeTicket(i) == (
---		for all ticket in set tickets do
---			if ticket.getID() = i
---			then 
---				tickets := tickets \ {ticket};
---				return;
---	);
-	
+		
 	public getID : () ==> nat
 	getID()==(
 		return id;
@@ -55,7 +38,6 @@ operations
 	getCapacity()==(
 		return capacity;
 	);
-	
 	
 	public getTickets : () ==> set of Ticket
 	getTickets() == (

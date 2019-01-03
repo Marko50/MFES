@@ -6,25 +6,29 @@ values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-	private owner : String;
-	private event : String;
+	private owner : User;
+	private event : Event;
 	private id: nat; 
+	private cost : nat;
 	static count : nat := 0;
 operations
 -- TODO Define operations here
-	public Ticket: String * String ==> Ticket
-	Ticket(o,e) == (owner := o; event := e; id := count; count := count + 1 ; return self;)
+	public Ticket: User * Event * nat ==> Ticket
+	Ticket(o,e,c) == (owner := o; event := e; cost := c; id := count; count := count + 1 ; return self;)
 	pre count >= 0
-	post owner = o and event = e and id = count - 1 ;
+	post owner = o and event = e and id = count - 1 and cost = c ;
 	
-	public getOwner : () ==> String
+	public getOwner : () ==> User
 	getOwner() == (return owner;);
 	
-	public getEvent : () ==> String
+	public getEvent : () ==> Event
 	getEvent() == (return event;);
 	
 	public getID : () ==> nat
 	getID() == (return id;);
+	
+	public getCost : () ==> nat
+	getCost() == (return cost;);
 			 
 functions
 -- TODO Define functiones here
