@@ -1,21 +1,14 @@
-class UserManager
+class EventManager
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-  private user : nat := undefined;
-	private users : map nat to User; -- id to User
 operations
 -- TODO Define operations here
-	public UserManager : map nat to User ==> UserManager
-	UserManager(uss) == (
-		users := uss;
-		return self;
-	);
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end UserManager
+end EventManager

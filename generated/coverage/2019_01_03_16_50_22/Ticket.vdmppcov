@@ -18,16 +18,16 @@ operations
 	pre count >= 0
 	post owner = o and event = e and id = count - 1 and cost = c ;
 	
-	public pure getOwner : () ==> User
+	public getOwner : () ==> User
 	getOwner() == (return owner;);
 	
-	public pure getEvent : () ==> Event
+	public getEvent : () ==> Event
 	getEvent() == (return event;);
 	
-	public pure getID : () ==> nat
+	public getID : () ==> nat
 	getID() == (return id;);
 	
-	public pure getCost : () ==> nat
+	public getCost : () ==> nat
 	getCost() == (return cost;);
 			 
 functions

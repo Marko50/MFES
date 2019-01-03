@@ -9,32 +9,29 @@ instance variables
 	private name : String;
 	private id : nat;
 	private funds : nat := 0;
-	private password : String;
 	static count : nat := 0;
 operations
 -- TODO Define operations here
-	public User: String * String ==> User
-	User(n,p) == (name := n; id := count; password := p; count := count + 1 ; return self;)
+	public User: String ==> User
+	User(n) == (name := n; id := count; count := count + 1 ; return self;)
 	pre count >= 0
 	post name = n and id = count - 1 ;
 	
-	public pure getName : () ==> String
+	public getName : () ==> String
 	getName() == (return name;);
 	
-	public pure getID : () ==> nat
+	public getID : () ==> nat
 	getID() == (return id;);
 	
-	public pure getFunds : () ==> nat
+	public getFunds : () ==> nat
 	getFunds() == (return funds;);
 	
 	public addFunds : nat ==> ()
 	addFunds(f) == (funds := funds + f;)
-	pre funds + f <= 10000
 	post funds = funds~ + f;
 	
 	public removeFunds : nat ==> ()
 	removeFunds(f) == (funds := funds - f;)
-	pre funds - f >= 0
 	post funds = funds~ - f;
 	
 	

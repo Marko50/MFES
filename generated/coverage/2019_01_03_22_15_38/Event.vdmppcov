@@ -14,19 +14,29 @@ instance variables
 -- TODO Define instance variables here
 	private name : String;
 	private date : Date;
+	private id : nat;
 	private capacity : nat;
 	private tickets : map nat to Ticket := {|->};
+	static count : nat := 0;
 operations
 -- TODO Define operations here
 	public Event : String * nat * Date ==> Event
 	Event(n, c, d) == (
 		name := n; 
 		capacity := c; 
+		id := count; 
+		count := count + 1; 
 		date := d; 
 		return self
 	)
+	pre count >= 0
 	post name = n and capacity = c and tickets = {|->};
-				
+			
+	public pure getID : () ==> nat
+	getID()==(
+		return id;
+	);
+	
 	public pure getName : () ==> String
 	getName()==(
 		return name;
