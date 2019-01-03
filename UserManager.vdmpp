@@ -1,19 +1,44 @@
 class UserManager
 types
 -- TODO Define types here
+	public String = seq of char;
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-  private user : nat := undefined;
-	private users : map nat to User; -- id to User
+  private user : String := undefined;
+	private users : map String to User; -- id to User
 operations
 -- TODO Define operations here
-	public UserManager : map nat to User ==> UserManager
+	public UserManager : map String to User ==> UserManager
 	UserManager(uss) == (
 		users := uss;
 		return self;
 	);
+	
+	public login : String * String ==> bool
+	login(u,p) == (
+		if users(u).getPassword() = p
+		then (user:= u; return true)
+		else return false
+	)
+	pre u in set dom users;
+	
+	public logout : () ==> ()
+	logout() == (user := undefined);
+	
+	public register : String * String ==> ()
+	register(u,p) == (
+			users := users ++ {u |-> new User(u,p)};
+	)
+	pre u not in set dom users;
+	
+	public getUser : () ==> String
+	getUser() == (return user;);
+	
+	public getUsers : () ==> map String to User
+	getUsers() == (return users;);
+	
 functions
 -- TODO Define functiones here
 traces

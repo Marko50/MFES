@@ -7,25 +7,22 @@ values
 instance variables
 -- TODO Define instance variables here
 	private name : String;
-	private id : nat;
 	private funds : nat := 0;
 	private password : String;
-	static count : nat := 0;
 operations
 -- TODO Define operations here
 	public User: String * String ==> User
-	User(n,p) == (name := n; id := count; password := p; count := count + 1 ; return self;)
-	pre count >= 0
-	post name = n and id = count - 1 ;
+	User(n,p) == (name := n; password := p; return self;)
+	post name = n and password = p;
 	
 	public pure getName : () ==> String
 	getName() == (return name;);
 	
-	public pure getID : () ==> nat
-	getID() == (return id;);
-	
 	public pure getFunds : () ==> nat
 	getFunds() == (return funds;);
+	
+	public pure getPassword : () ==> String
+	getPassword() == (return password;);
 	
 	public addFunds : nat ==> ()
 	addFunds(f) == (funds := funds + f;)
