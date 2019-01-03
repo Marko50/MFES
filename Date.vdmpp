@@ -5,13 +5,13 @@ values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-	private day : nat;
-	private month : nat;
+	private day : nat1;
+	private month : nat1;
 	private year : nat;
 	
 operations
 -- TODO Define operations here
-	public Date: nat * nat * nat ==> Date
+	public Date: nat1 * nat1 * nat ==> Date
 	Date(d,m,y) == (
 		day := d;
 	 	month:=m; 
@@ -23,10 +23,10 @@ operations
 	checkValid(d, m, y) == (
 		if y < 2019 then
 			return false;
-		if (m < 1 or m > 12) then
+			
+		if m > 12 then
 			return false;
-		if d < 1 then
-			return false;
+
 		if (m = 2) then (
 			if isLeapYear(y) then (
 				if d > 29 then
