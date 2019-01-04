@@ -33,10 +33,10 @@ operations
 	)
 	pre u not in set dom users;
 	
-	public getUser : () ==> String
+	public pure getUser : () ==> String
 	getUser() == (return user;);
 	
-	public getUsers : () ==> map String to User
+	public pure getUsers : () ==> map String to User
 	getUsers() == (return users;);
 	
 functions
