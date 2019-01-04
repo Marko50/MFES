@@ -60,7 +60,7 @@ operations
 		tickets:= {i} <-: tickets; 
 	)
 	pre i in set dom tickets
-	post tickets = {i} <-: tickets; 
+	post tickets = {i} <-: tickets~; 
 	
 functions
 -- TODO Define functiones here

@@ -1,12 +1,46 @@
 class EventManager
 types
 -- TODO Define types here
+	public String = seq of char;
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
+	private events : map String to Event := {|->};
 operations
 -- TODO Define operations here
+	public EventManager : map String to Event ==> EventManager
+	EventManager(evs) == (
+		events := evs;
+		return self;
+	)
+	post events = evs;
+	
+	public pure getEvents : () ==> map String to Event
+	getEvents() == (
+		return events;
+	);
+	
+	public pure getEvent : String ==> Event
+	getEvent (e) == (
+		return events(e);
+	)
+	pre e in set dom events;
+	
+	public addEvent : Event ==> ()
+	addEvent(event) == (
+		events := events ++ {event.getName() |-> event}
+	)
+	pre event.getName() not in set dom events
+	post events = events~ ++ {event.getName() |-> event};
+	
+	public removeEvent : String ==> ()
+	removeEvent(e) == (
+		events:= {e} <-: events; 
+	)
+	pre e in set dom events
+	post events = {e} <-: events~; 
+
 functions
 -- TODO Define functiones here
 traces

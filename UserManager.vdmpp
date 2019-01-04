@@ -6,7 +6,7 @@ values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-  private user : String := undefined;
+  private current_user : String := "";
 	private users : map String to User; -- id to User
 operations
 -- TODO Define operations here
@@ -19,25 +19,28 @@ operations
 	public login : String * String ==> bool
 	login(u,p) == (
 		if users(u).getPassword() = p
-		then (user:= u; return true)
+		then (current_user:= u; return true)
 		else return false
 	)
 	pre u in set dom users;
 	
 	public logout : () ==> ()
-	logout() == (user := undefined);
+	logout() == (current_user := "");
 	
 	public register : String * String ==> ()
 	register(u,p) == (
 			users := users ++ {u |-> new User(u,p)};
 	)
 	pre u not in set dom users;
-	
+
 	public pure getUser : () ==> String
-	getUser() == (return user;);
+	getUser() == (return current_user;);
 	
 	public pure getUsers : () ==> map String to User
 	getUsers() == (return users;);
+	
+	public pure isLoggedIn : () ==> bool
+	isLoggedIn() == (return current_user = "" ;);
 	
 functions
 -- TODO Define functiones here
