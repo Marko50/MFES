@@ -28,7 +28,7 @@ operations
 	logout() == (
 		current_user := ""
 	)
-	pre isLoggedIn();
+	pre current_user <> "";
 	
 	public register : String * String ==> ()
 	register(u,p) == (
@@ -42,29 +42,8 @@ operations
 	public pure getUsers : () ==> map String to User
 	getUsers() == (return users;);
 	
-	private pure isLoggedIn : () ==> bool
-	isLoggedIn() == (return current_user <> "" ;);
-	
-	public buyTicket : Event ==> ()
-	buyTicket(e) == (users(current_user).buyTicket(e))
-	pre isLoggedIn();
-	
-	public pure getUserTickets :() ==> map nat to Ticket
-	getUserTickets() == (return users(current_user).getTickets())
-	pre isLoggedIn();
-	
-	public getUserTicketsEvent : Event ==> set of Ticket
-	getUserTicketsEvent(e) == (
-		dcl tickets : set of Ticket := {};
-		for all ticket in set rng (users(current_user).getTickets()) do 
-		(
-			if ticket.getEvent() = e
-				then tickets := tickets union {ticket};
-		);
-		return tickets;
-	);
-	
-	
+	public pure isLoggedIn : () ==> bool
+	isLoggedIn() == (return current_user = "" ;);
 	
 functions
 -- TODO Define functiones here

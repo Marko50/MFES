@@ -64,7 +64,7 @@ operations
 	buyTicket(e) == (
 		dcl ticketPrice : nat := e.getTicketPrice();
 		removeFunds(ticketPrice);
-		addTicket(new Ticket(self, e));
+		addTicket(new Ticket(self, e, ticketPrice));
 	);
 	
 	public addTicket : Ticket ==> ()

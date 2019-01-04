@@ -40,7 +40,6 @@ operations
 	)
 	pre e in set dom events
 	post events = {e} <-: events~; 
-	
 
 functions
 -- TODO Define functiones here

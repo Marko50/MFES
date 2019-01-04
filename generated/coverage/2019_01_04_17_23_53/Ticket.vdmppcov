@@ -9,19 +9,21 @@ instance variables
 	private owner : User;
 	private event : Event;
 	private id: nat; 
+	private cost : nat;
 	static count : nat := 0;
 operations
 -- TODO Define operations here
-	public Ticket: User * Event ==> Ticket
-	Ticket(o,e) == (
+	public Ticket: User * Event * nat ==> Ticket
+	Ticket(o,e,c) == (
 		owner := o; 
 		event := e; 
+		cost := c; 
 		id := count; 
 		count := count + 1;
 		return self;
 	)
 	pre count >= 0
-	post owner = o and event = e and id = count - 1;
+	post owner = o and event = e and id = count - 1 and cost = c ;
 	
 	public pure getOwner : () ==> User
 	getOwner() == (
@@ -36,6 +38,11 @@ operations
 	public pure getID : () ==> nat
 	getID() == (
 		return id;
+	);
+	
+	public pure getCost : () ==> nat
+	getCost() == (
+		return cost;
 	);
 			 
 functions

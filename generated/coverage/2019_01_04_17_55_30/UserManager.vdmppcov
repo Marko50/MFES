@@ -28,7 +28,7 @@ operations
 	logout() == (
 		current_user := ""
 	)
-	pre isLoggedIn();
+	pre current_user <> "";
 	
 	public register : String * String ==> ()
 	register(u,p) == (
@@ -43,7 +43,7 @@ operations
 	getUsers() == (return users;);
 	
 	private pure isLoggedIn : () ==> bool
-	isLoggedIn() == (return current_user <> "" ;);
+	isLoggedIn() == (return current_user = "" ;);
 	
 	public buyTicket : Event ==> ()
 	buyTicket(e) == (users(current_user).buyTicket(e))
@@ -55,8 +55,8 @@ operations
 	
 	public getUserTicketsEvent : Event ==> set of Ticket
 	getUserTicketsEvent(e) == (
-		dcl tickets : set of Ticket := {};
-		for all ticket in set rng (users(current_user).getTickets()) do 
+		dcl tickets : set of Ticket;
+		for all ticket in set rng users(current_user).getTickets() do 
 		(
 			if ticket.getEvent() = e
 				then tickets := tickets union {ticket};
