@@ -14,21 +14,36 @@ instance variables
 operations
 -- TODO Define operations here
 	public Ticket: User * Event * nat ==> Ticket
-	Ticket(o,e,c) == (owner := o; event := e; cost := c; id := count; count := count + 1 ; return self;)
+	Ticket(o,e,c) == (
+		owner := o; 
+		event := e; 
+		cost := c; 
+		id := count; 
+		count := count + 1;
+		return self;
+	)
 	pre count >= 0
 	post owner = o and event = e and id = count - 1 and cost = c ;
 	
 	public pure getOwner : () ==> User
-	getOwner() == (return owner;);
+	getOwner() == (
+		return owner;
+	);
 	
 	public pure getEvent : () ==> Event
-	getEvent() == (return event;);
+	getEvent() == (
+		return event;
+	);
 	
 	public pure getID : () ==> nat
-	getID() == (return id;);
+	getID() == (
+		return id;
+	);
 	
 	public pure getCost : () ==> nat
-	getCost() == (return cost;);
+	getCost() == (
+		return cost;
+	);
 			 
 functions
 -- TODO Define functiones here

@@ -1,0 +1,4 @@
+create e := new Event("cenas", 15, mk_Date(21,2,2019))
+create u := new User("dank", "memes")
+print u.addFunds(100)
+print u.buyTicket(e)

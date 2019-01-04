@@ -13,30 +13,44 @@ instance variables
 operations
 -- TODO Define operations here
 	public User: String * String ==> User
-	User(n,p) == (name := n; password := p; return self;)
+	User(n,p) == (
+		name := n;
+		password := p;
+		return self;
+	)
 	post name = n and password = p and tickets = {|->};
 	
 	public pure getName : () ==> String
-	getName() == (return name;);
+	getName() == (
+		return name;
+	);
 	
 	public pure getFunds : () ==> nat
-	getFunds() == (return funds;);
+	getFunds() == (
+		return funds;
+	);
 	
 	public pure getPassword : () ==> String
-	getPassword() == (return password;);
+	getPassword() == (
+		return password;
+	);
 	
 	public addFunds : nat ==> ()
-	addFunds(f) == (funds := funds + f;)
+	addFunds(f) == (
+		funds := funds + f;
+	)
 	pre funds + f <= 10000
 	post funds = funds~ + f;
 	
 	public removeFunds : nat ==> ()
-	removeFunds(f) == (funds := funds - f;)
+	removeFunds(f) == (
+		funds := funds - f;
+	)
 	pre funds - f >= 0
 	post funds = funds~ - f;
 	
-		public pure getTickets : () ==> map nat to Ticket
-	getTickets() == (
+	public pure getTickets : () ==> map nat to Ticket
+		getTickets() == (
 		return tickets;
 	);
 	
@@ -46,9 +60,17 @@ operations
 	)
 	pre i in set dom tickets;
 	
+	public buyTicket : Event ==> ()
+	buyTicket(e) == (
+		dcl ticketPrice : nat := e.getTicketPrice();
+		removeFunds(ticketPrice);
+		addTicket(new Ticket(self, e, ticketPrice));
+	);
+	
 	public addTicket : Ticket ==> ()
 	addTicket(ticket) == (
-		tickets := tickets ++ {ticket.getID() |-> ticket}
+		tickets := tickets ++ {ticket.getID() |-> ticket};
+		ticket.getEvent().addTicket(ticket);
 	)
 	pre ticket.getID() not in set dom tickets
 	post tickets = tickets~ ++ {ticket.getID() |-> ticket};

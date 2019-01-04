@@ -16,12 +16,15 @@ instance variables
 	private date : Date;
 	private capacity : nat;
 	private tickets : map nat to Ticket := {|->};
+		inv card dom tickets <= capacity;
+	private ticketPrice : nat;
 operations
 -- TODO Define operations here
-	public Event : String * nat * Date ==> Event
-	Event(n, c, d) == (
+	public Event : String * nat * nat * Date ==> Event
+	Event(n, c, p, d) == (
 		name := n; 
 		capacity := c; 
+		ticketPrice := p;
 		date := d; 
 		return self
 	)
@@ -35,6 +38,16 @@ operations
 	public pure getCapacity : () ==> nat
 	getCapacity()==(
 		return capacity;
+	);
+	
+	public pure getTicketPrice : () ==> nat
+	getTicketPrice()==(
+		return ticketPrice;
+	);
+	
+	public pure getFillPercent : () ==> nat
+	getFillPercent()==(
+		return card dom tickets / capacity;
 	);
 	
 	public pure getTickets : () ==> map nat to Ticket

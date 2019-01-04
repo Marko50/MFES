@@ -25,11 +25,14 @@ operations
 	pre u in set dom users;
 	
 	public logout : () ==> ()
-	logout() == (current_user := "");
+	logout() == (
+		current_user := ""
+	)
+	pre current_user <> "";
 	
 	public register : String * String ==> ()
 	register(u,p) == (
-			users := users ++ {u |-> new User(u,p)};
+		users := users ++ {u |-> new User(u,p)};
 	)
 	pre u not in set dom users;
 
