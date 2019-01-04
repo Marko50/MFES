@@ -45,32 +45,23 @@ operations
 	private pure isLoggedIn : () ==> bool
 	isLoggedIn() == (return current_user <> "" ;);
 	
-	public buyTicket : String * TicketManager * EventManager ==> ()
-	buyTicket(e,tm,em) == (
-	dcl ticket : Ticket := new Ticket(current_user, em.getEvents()(e).getName());
-	tm.addTicket(ticket);
-	users(current_user).buyTicket(em.getEvents()(e).getTicketPrice(), ticket.getID()))
+	public buyTicket : Event ==> ()
+	buyTicket(e) == (users(current_user).buyTicket(e))
 	pre isLoggedIn();
 	
-	public pure getUserTickets :() ==> set of nat
+	public pure getUserTickets :() ==> map nat to Ticket
 	getUserTickets() == (return users(current_user).getTickets())
 	pre isLoggedIn();
 	
-	public getUserTicketsEvent : String * TicketManager ==> set of nat
-	getUserTicketsEvent(e,tm) == (
-		dcl tickets : set of nat := {};
-		for all ticket in set (users(current_user).getTickets()) do 
+	public getUserTicketsEvent : String ==> set of Ticket
+	getUserTicketsEvent(e) == (
+		dcl tickets : set of Ticket := {};
+		for all ticket in set rng (users(current_user).getTickets()) do 
 		(
-			if tm.getTickets()(ticket).getEvent() = e
+			if ticket.getEvent().getName() = e
 				then tickets := tickets union {ticket};
 		);
 		return tickets;
-	);
-	
-	public promoteEvent : String*EventManager ==> ()
-	promoteEvent(e,em) == (
-		em.getEvents()(e).promote();
-		users(current_user).promoteEvent();
 	);
 	
 	

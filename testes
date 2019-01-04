@@ -16,6 +16,8 @@ print user_manager.buyTicket(e)
 print user_manager.buyTicket(e)
 print user_manager.buyTicket(e)
 
+print e.getFillPercent()
+
 print user_manager.buyTicket(e2)
 print user_manager.buyTicket(e2)
 

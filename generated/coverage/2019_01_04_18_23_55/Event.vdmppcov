@@ -15,9 +15,8 @@ instance variables
 	private name : String;
 	private date : Date;
 	private capacity : nat;
-	private popularity: nat := 0;
-	private tickets : set of nat := {};
-		inv card tickets <= capacity;
+	private tickets : map nat to Ticket := {|->};
+		inv card dom tickets <= capacity;
 	private ticketPrice : nat;
 operations
 -- TODO Define operations here
@@ -29,7 +28,7 @@ operations
 		date := d; 
 		return self
 	)
-	post name = n and capacity = c and tickets = {} and popularity = 0;
+	post name = n and capacity = c and tickets = {|->};
 				
 	public pure getName : () ==> String
 	getName()==(
@@ -48,31 +47,33 @@ operations
 	
 	public pure getFillPercent : () ==> nat
 	getFillPercent()==(
-		return (card (tickets) / capacity ) * 100;
+		return (card (dom tickets) / capacity ) * 100;
 	);
 	
-	public pure getTickets : () ==> set of nat
+	public pure getTickets : () ==> map nat to Ticket
 	getTickets() == (
 		return tickets;
 	);
 	
-	public addTicket : nat ==> ()
-	addTicket(ticket) == (
-		tickets := tickets union {ticket}
+	public pure getTicket : nat ==> Ticket
+	getTicket (i) == (
+		return tickets(i);
 	)
-	pre card tickets <= capacity and ticket not in set tickets
-	post tickets = tickets~ union {ticket};
+	pre i in set dom tickets;
+	
+	public addTicket : Ticket ==> ()
+	addTicket(ticket) == (
+		tickets := tickets ++ {ticket.getID() |-> ticket}
+	)
+	pre card dom tickets <= capacity and ticket.getID() not in set dom tickets
+	post tickets = tickets~ ++ {ticket.getID() |-> ticket};
 	
 	public removeTicket : nat ==> ()
 	removeTicket(i) == (
-		tickets:= tickets \ {i}; 
+		tickets:= {i} <-: tickets; 
 	)
-	pre i in set tickets
-	post tickets = tickets~ \ {i}; 
-	
-	public promote : () ==> ()
-	promote() == (popularity := popularity + 10;)
-	pre popularity + 10 <= 100;
+	pre i in set dom tickets
+	post tickets = {i} <-: tickets~; 
 	
 functions
 -- TODO Define functiones here
