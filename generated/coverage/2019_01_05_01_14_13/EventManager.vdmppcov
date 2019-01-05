@@ -69,9 +69,7 @@ operations
 	)
 	pre eventExists(e);
 	
-	public getEarnings : String ==> rat
-	getEarnings(e) == (return events(e).getEarnings();)
-	pre eventExists(e);
+	
 	
 
 functions

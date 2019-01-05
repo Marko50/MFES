@@ -35,13 +35,9 @@ operations
 		users := users ++ {u |-> new User(u,p)};
 	)
 	pre u not in set dom users;
-	
-	public pure getUser : String ==> User
-	getUser(u) == (return users(u);)
-	pre u in set dom users;
 
-	public pure getCurrentUser : () ==> String
-	getCurrentUser() == (return current_user;);
+	public pure getUser : () ==> String
+	getUser() == (return current_user;);
 	
 	public pure getUsers : () ==> map String to User
 	getUsers() == (return users;);

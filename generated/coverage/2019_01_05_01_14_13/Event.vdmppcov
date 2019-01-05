@@ -18,10 +18,10 @@ instance variables
 	private popularity: nat := 0;
 	private tickets : set of nat := {};
 		inv card tickets <= capacity;
-	private ticketPrice : rat;
+	private ticketPrice : nat;
 operations
 -- TODO Define operations here
-	public Event : String * nat * rat * Date ==> Event
+	public Event : String * nat * nat * Date ==> Event
 	Event(n, c, p, d) == (
 		name := n; 
 		capacity := c; 
@@ -29,7 +29,6 @@ operations
 		date := d; 
 		return self
 	)
-	pre p > 0
 	post name = n and capacity = c and tickets = {} and popularity = 0;
 				
 	public pure getName : () ==> String
@@ -74,11 +73,6 @@ operations
 	public promote : () ==> ()
 	promote() == (popularity := popularity + 10;)
 	pre popularity + 10 <= 100;
-	
-	public getEarnings : () ==> rat
-	getEarnings() == (
-		return card (tickets) * ticketPrice; 
-	)
 	
 functions
 -- TODO Define functiones here
