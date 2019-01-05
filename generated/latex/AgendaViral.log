@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  5 JAN 2019 02:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.13)  5 JAN 2019 15:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -204,7 +204,11 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \c@LT@chunks=\count109
 \LT@p@ftn=\toks16
 )
-(./AgendaViral.aux)
+(./AgendaViral.aux
+
+LaTeX Warning: Label `getName:35' multiply defined.
+
+)
 \openout1 = `AgendaViral.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
@@ -301,25 +305,25 @@ Package rerunfilecheck Info: File `AgendaViral.out' has not changed.
 (rerunfilecheck)             Checksum: B0527856C772079803EAD1B15F931E5C;261.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 25.
  ) 
 Here is how much of TeX's memory you used:
- 7006 strings out of 492982
- 103045 string characters out of 6134895
- 365022 words of memory out of 5000000
- 9986 multiletter control sequences out of 15000+600000
+ 7005 strings out of 492982
+ 103033 string characters out of 6134895
+ 365028 words of memory out of 5000000
+ 9985 multiletter control sequences out of 15000+600000
  17044 words of font info for 41 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 33i,6n,48p,243b,1936s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 33i,6n,48p,243b,1934s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/latxfont/lcircle1.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/u
 tmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb>
-Output written on AgendaViral.pdf (9 pages, 91143 bytes).
+Output written on AgendaViral.pdf (9 pages, 91149 bytes).
 PDF statistics:
  731 PDF objects out of 1000 (max. 8388607)
  706 compressed objects within 8 object streams
