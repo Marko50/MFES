@@ -6,22 +6,27 @@ create u := new User("dank", "memes")
 
 print u.addFunds(100)
 
-create event_manager := new EventManager({ "cenas" |-> e,"cenas_random" |-> e2})
+create event_manager := new EventManager({ "cenas" |-> e,"cenas_random" |-> e2, "lel_cenas_random"|-> e3})
 
 create user_manager := new UserManager({"dank" |-> u})
 
+create ticket_manager := new TicketManager({|->})
+
 print user_manager.login("dank","memes")
 
-print user_manager.buyTicket(e)
-print user_manager.buyTicket(e)
-print user_manager.buyTicket(e)
+print user_manager.buyTicket("cenas",ticket_manager,event_manager)
+print user_manager.buyTicket("cenas",ticket_manager,event_manager)
+print user_manager.buyTicket("cenas",ticket_manager,event_manager)
 
 print e.getFillPercent()
 
-print user_manager.buyTicket(e2)
-print user_manager.buyTicket(e2)
+print user_manager.buyTicket("cenas_random",ticket_manager,event_manager)
+print user_manager.buyTicket("cenas_random",ticket_manager,event_manager)
 
-print user_manager.buyTicket(e3)
+print user_manager.buyTicket("lel_cenas_random",ticket_manager,event_manager)
 
-print user_manager.getUserTicketsEvent(e) 
+print user_manager.getUserTicketsEvent("cenas", ticket_manager) 
+
+
+
 

@@ -49,7 +49,6 @@ operations
 	buyTicket(e,tm,em) == (
 	dcl ticket : Ticket := new Ticket(current_user, em.getEvents()(e).getName());
 	tm.addTicket(ticket);
-	em.getEvents()(e).addTicket(ticket.getID());
 	users(current_user).buyTicket(em.getEvents()(e).getTicketPrice(), ticket.getID()))
 	pre isLoggedIn();
 	
