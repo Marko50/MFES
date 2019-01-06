@@ -1,18 +1,19 @@
 class User
+/*
+  Represents a user.
+  Defines the variables and operations available to users.
+*/
 types
--- TODO Define types here
  	public String = seq of char;
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
 	private name : String;
 	private funds : nat := 0;
 	private password : String;
 	private events : set of String := {};
 	private tickets : set of nat := {};
 operations
--- TODO Define operations here
+	-- User constructor, receives Strings for user name and password
 	public User: String * String ==> User
 	User(n,p) == (
 		name := n;
@@ -21,27 +22,43 @@ operations
 	)
 	post name = n and password = p and tickets = {} and events = {};
 	
+	-- Returns set of Strings representing the names of user's events
 	public pure getEvents : () ==> set of String
-	getEvents() == (return events;);
+	getEvents() == (
+		return events;
+	);
 	
+	/*
+		Adds an event to user's events set of String
+		pre condition checks if event isn't already in set
+	*/ 
 	public addEvent: String ==> ()
-	addEvent(e) == (events := events union {e})
+	addEvent(e) == (
+		events := events union {e}
+	)
 	pre e not in set events;
 	
+	/*
+		Removes an event from user's events
+		pre condition checks if event is in set
+	*/ 
 	public removeEvent : String ==> ()
 	removeEvent(e) == (events := events \ {e})
 	pre e in set events;
 	
+	-- Returns user's name
 	public pure getName : () ==> String
 	getName() == (
 		return name;
 	);
 	
+	-- Returns user's funds
 	public pure getFunds : () ==> nat
 	getFunds() == (
 		return funds;
 	);
 	
+	-- Returns user's password
 	public pure getPassword : () ==> String
 	getPassword() == (
 		return password;
@@ -87,7 +104,5 @@ operations
 	post tickets = tickets~ \ {i}; 
 	
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end User
