@@ -27,8 +27,10 @@ public class Util {
     public static String BUY_TICKET_OPTION = "6";
     public static String SEARCH_TICKETS_EVENT_OPTION = "7";
     public static String CREATE_EVENT_OPTION = "8";
-    public static String SHOW_POPULAR_EVENTS_OPTION = "8";
-    public static String LOGOUT_OPTION = "9";
+    public static String SHOW_POPULAR_EVENTS_OPTION = "9";
+    public static String EVENT_OCUPATION_OPTION = "10";
+    public static String LOGOUT_OPTION = "11";
+
     
     public static String INITIAL_MENU = "0";
     public static String REGISTER_MENU = "1";

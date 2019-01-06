@@ -8,6 +8,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.io.FileReader;
 
@@ -15,6 +17,20 @@ import AgendaViral.*;
 import utils.Util;
 
 public class Interface{	
+	private class compareEvents implements Comparator<Event>{
+
+		@Override
+		public int compare(Event arg0, Event arg1) {
+			if((long )arg0.getPopularity() > (long) arg1.getPopularity()) {
+				return -1;
+			}
+			else if((long )arg0.getPopularity() < (long) arg1.getPopularity()) {
+				return 1;
+			}
+			return 0;
+		}
+		
+	}
     private EventManager eventManager;
 	private TicketManager ticketManager;
     private UserManager userManager;
@@ -58,12 +74,12 @@ public class Interface{
     	System.out.println(Util.PROMOTE_EVENT_OPTION + " Promote an event.");
     	System.out.println(Util.MY_EVENTS_OPTION + " Check your events.");
     	System.out.println(Util.MY_PURCHASED_TICKETS_OPTION + " Check all your purchased tickets.");
-//    	System.out.println(Util.MY_FUNDS_OPTION + " Logout.");
-//    	System.out.println(Util.BUY_TICKET_OPTION + " Logout.");
-//    	System.out.println(Util.SEARCH_TICKETS_EVENT_OPTION + " Logout.");
-//    	System.out.println(Util.BUY_TICKET_OPTION + " Logout.");
-//    	System.out.println(Util.CREATE_EVENT_OPTION + " Logout.");
-//    	System.out.println(Util.SHOW_POPULAR_EVENTS_OPTION + " Logout.");
+    	System.out.println(Util.MY_FUNDS_OPTION + " Check your funds.");
+    	System.out.println(Util.BUY_TICKET_OPTION + " Buy a ticket for an event.");
+    	System.out.println(Util.SEARCH_TICKETS_EVENT_OPTION + " Search your tickets for an event.");
+    	System.out.println(Util.CREATE_EVENT_OPTION + " Create an event.");
+    	System.out.println(Util.SHOW_POPULAR_EVENTS_OPTION + " Show 5 more popular events.");
+    	System.out.println(Util.EVENT_OCUPATION_OPTION + " Show event ocupation.");
     	System.out.println(Util.LOGOUT_OPTION + " Logout.");
     	System.out.print("Opcao: ");
     	try {
@@ -85,33 +101,116 @@ public class Interface{
 				this.showPurchasedTickets();
 			}
 			else if(option.equals(Util.MY_FUNDS_OPTION)) {
-			
+				this.showMyFunds();
 			}
 			else if(option.equals(Util.BUY_TICKET_OPTION)) {
-				
+				this.showBuyTicket();
 			}
 			else if(option.equals(Util.SEARCH_TICKETS_EVENT_OPTION)) {
-			
+				this.showTicketsForEvent();
 			}
 			else if(option.equals(Util.CREATE_EVENT_OPTION)) {
-			
+				this.showCreateEvent();
+			}
+			else if(option.equals(Util.EVENT_OCUPATION_OPTION)) {
+				this.showEventOcupation();
 			}
 			else if(option.equals(Util.SHOW_POPULAR_EVENTS_OPTION)) {
-				
+				this.showPopularEvents();
 			}
 		} catch (IOException e) {
 			this.state = Util.EXIT; 
 		}
     }
     
+    @SuppressWarnings("unchecked")
+	private void showPopularEvents() {
+    	Comparator<Event> comparator = new compareEvents();
+    	PriorityQueue<Event> events = new PriorityQueue<>(5, comparator);
+    	this.eventManager.getEvents().forEach((k,v)->{
+    		events.add((Event) v);
+    	});
+    	int i = 0;
+    	while(i < 5 && !events.isEmpty()) {
+    		Event temp = events.poll();
+    		System.out.println((i+1) + ". " + temp.getName() + " : " +temp.getPopularity());
+    		i++;
+    	}
+    }
+    
+    private void showEventOcupation() {
+    	System.out.print("Event name: ");
+    	try {
+			String event = this.bufferedReader.readLine();
+			Number percentage = this.eventManager.getEventFillPercent(event);
+			System.out.println("Ocupation: " + percentage + "%");
+		} catch (IOException e) {
+			this.state = Util.EXIT;
+		}
+    }
+    
+    private void showCreateEvent() {
+    	System.out.print("Event name :" );
+    	try {
+			String event = this.bufferedReader.readLine();
+			System.out.print("Event capacity: ");
+			String capacity = this.bufferedReader.readLine();
+			System.out.print("Event day: ");
+			String day = this.bufferedReader.readLine();
+			System.out.print("Event month: ");
+			String month = this.bufferedReader.readLine();
+			System.out.print("Event year: ");
+			String year = this.bufferedReader.readLine();
+			System.out.print("Event price: ");
+			String price = this.bufferedReader.readLine();
+			Data.Date date = new Data.Date(Integer.parseInt(day), Integer.parseInt(month), Integer.parseInt(year));
+			Event e = new Event(event, Integer.parseInt(capacity) , Integer.parseInt(price), date);
+			this.userManager.createEvent(e, this.eventManager);
+			System.out.println("You have just created an event!");
+		} catch (IOException e) {
+			this.state = Util.EXIT;
+		}
+    }
+    
+    @SuppressWarnings("unchecked")
+	private void showTicketsForEvent() {
+    	System.out.print("Event: ");
+    	try {
+			String event = this.bufferedReader.readLine();
+			this.ticketManager.getTickets().forEach((k,v)->{
+				Ticket ticket = (Ticket) v;
+				if (ticket.getOwner().equals(this.userManager.getCurrentUser()) && ticket.getEvent().equals(event)) {
+					System.out.println("Ticket ID: " + ticket.getID());
+				}
+			});
+		} catch (IOException e) {
+			this.state = Util.EXIT;
+		}
+    }
+    
+    private void showBuyTicket() {
+    	System.out.print("Event: ");
+    	try {
+			String event = this.bufferedReader.readLine();
+			this.userManager.buyTicket(event, this.ticketManager, this.eventManager);
+			System.out.println("You purchased a ticket for " + event);
+		} catch (IOException e) {
+			this.state = Util.EXIT;
+		}
+    }
+    
+    private void showMyFunds() {
+    	Number funds = this.userManager.getUser(this.userManager.getCurrentUser()).getFunds();
+    	System.out.println("Your Funds: " + funds);
+    }
+    
     @SuppressWarnings({ "unused", "unchecked" })
 	private void showPurchasedTickets() {
-    	System.out.println(this.userManager.getCurrentUser());
-    	System.out.println(this.userManager.getUser(this.userManager.getCurrentUser()).getTickets().toString());
-    	this.userManager.getUser(this.userManager.getCurrentUser()).getTickets().forEach(v ->{
-    		Ticket ticket = (Ticket) this.ticketManager.getTickets().get((int) v);
-    		System.out.println(ticket.toString());
-    		System.out.println(ticket.getID() + "  for  " + ticket.getEvent());
+    	this.ticketManager.getTickets().forEach((k,v)->{
+    		Ticket ticket = (Ticket) v;
+    		if(ticket.getOwner().equals(this.userManager.getCurrentUser())) {
+    			System.out.println(ticket.getID() + "  for  " + ticket.getEvent());
+    		}
     	});
     }
     

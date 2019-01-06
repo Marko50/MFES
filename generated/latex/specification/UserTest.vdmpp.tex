@@ -186,7 +186,29 @@ operations
  );
  
 (*@
-\label{main:136}
+\label{testAddUser:136}
+@*)
+ private testAddUser : () ==> ()
+ testAddUser() == (
+  dcl newUser : User := new User("addUserTest", "pass");
+  um.addUser(newUser);
+  assertTrue(um.getUser("addUserTest") = newUser);
+ );
+ 
+(*@
+\label{testCreateEvent:143}
+@*)
+ private testCreateEvent : () ==> ()
+ testCreateEvent() == (
+  dcl newEvent : Event := new Event("testEvent", 10, 10, mk_Date(10,10,2019));
+  assertTrue(um.login("dank","memes"));
+  um.createEvent(newEvent, em);
+  assertTrue(em.getEvent("testEvent") = newEvent);
+  assertTrue(um.getUser("dank").getEvents() = {"testEvent"});
+ );
+ 
+(*@
+\label{main:152}
 @*)
  public static main: () ==> ()
  main() == (
@@ -206,6 +228,8 @@ operations
   new UserTest().testGetUsers();
   new UserTest().testGetUserTickets();
   new UserTest().testGetUserTicketsEvent();
+  new UserTest().testAddUser();
+  new UserTest().testCreateEvent();
  );
 functions
 -- TODO Define functiones here

@@ -42,7 +42,14 @@ operations
 	removeTicket(i) == (
 		tickets:= {i} <-: tickets; 
 	)
-	pre i in set dom tickets
+	pre i in set dom tickets;
+	
+	
+	public getTicket : nat ==> Ticket
+	getTicket(i) == (
+		return tickets(i);
+	)
+	pre i in set dom tickets;
 	
 functions
 traces

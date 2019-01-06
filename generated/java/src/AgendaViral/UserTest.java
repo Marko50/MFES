@@ -139,6 +139,22 @@ public class UserTest extends Data {
     assertTrue(Utils.equals(um.getUserTicketsEvent("evento4", tm), SetUtil.set(33L, 34L, 35L)));
   }
 
+  private void testAddUser() {
+
+    User newUser = new User("addUserTest", "pass");
+    um.addUser(newUser);
+    assertTrue(Utils.equals(um.getUser("addUserTest"), newUser));
+  }
+
+  private void testCreateEvent() {
+
+    Event newEvent = new Event("testEvent", 10L, 10L, new Data.Date(10L, 10L, 2019L));
+    assertTrue(um.login("dank", "memes"));
+    um.createEvent(newEvent, em);
+    assertTrue(Utils.equals(em.getEvent("testEvent"), newEvent));
+    assertTrue(Utils.equals(um.getUser("dank").getEvents(), SetUtil.set("testEvent")));
+  }
+
   public static void main() {
 
     new UserTest().testGetName();
@@ -157,6 +173,8 @@ public class UserTest extends Data {
     new UserTest().testGetUsers();
     new UserTest().testGetUserTickets();
     new UserTest().testGetUserTicketsEvent();
+    new UserTest().testAddUser();
+    new UserTest().testCreateEvent();
   }
 
   public UserTest() {}

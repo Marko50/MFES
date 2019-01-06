@@ -22,7 +22,7 @@ public class TicketManager {
 
     return Utils.copy(tickets);
   }
-  
+
   public void addTicket(final Ticket ticket) {
 
     tickets =
@@ -32,6 +32,11 @@ public class TicketManager {
   public void removeTicket(final Number i) {
 
     tickets = MapUtil.domResBy(SetUtil.set(i), Utils.copy(tickets));
+  }
+
+  public Ticket getTicket(final Number i) {
+
+    return ((Ticket) Utils.get(tickets, i));
   }
 
   public TicketManager() {}

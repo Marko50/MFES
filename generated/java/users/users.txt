@@ -1,8 +1,8 @@
-andre-90-lolei-0,1,2-nos alive,meo sudoeste,rock in rio
+andre-70-lolei-0,1,2-nos alive,meo sudoeste,rock in rio,vestimenta
 pedro-37-123456789-3-nos alive
 joao-39-joao123-4-paredes de coura
 ricardo-85-joao-NONE-NONE
 adalberto-0-joao-NONE-NONE
 cenas-100-random-NONE-NONE
 ze-100-pedro-NONE-NONE
-zeze-100-camarinha-NONE-NONE
+zeze-65-camarinha-5-NONE

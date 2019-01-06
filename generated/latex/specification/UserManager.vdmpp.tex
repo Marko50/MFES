@@ -1,18 +1,24 @@
 \begin{vdmpp}[breaklines=true]
 class UserManager
+/*
+  Represents a user.
+  Defines the variables and operations available to users.
+*/
 types
--- TODO Define types here
  public String = seq of char;
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
+ -- Name of current logged in user
   private current_user : String := "";
- private users : map String to User; -- id to User
+  -- Map of user's name to user
+ private users : map String to User;
 operations
--- TODO Define operations here
+ /*
+  UserManager constructor
+  Receives a map user's name to User
+ */
 (*@
-\label{UserManager:13}
+\label{UserManager:19}
 @*)
  public UserManager : map String to User ==> UserManager
  UserManager(uss) == (
@@ -20,8 +26,14 @@ operations
   return self;
  );
  
+ /*
+  Logins a user
+  Receives user's name and password
+  Returns true if successful
+  Precondition checks if user's name exists
+ */
 (*@
-\label{login:19}
+\label{login:31}
 @*)
  public login : String * String ==> bool
  login(u,p) == (
@@ -31,8 +43,12 @@ operations
  )
  pre u in set dom users;
  
+ /*
+  Logs out current logged in user
+  Precondition checks if there's a user logged in
+ */
 (*@
-\label{logout:27}
+\label{logout:43}
 @*)
  public logout : () ==> ()
  logout() == (
@@ -40,8 +56,13 @@ operations
  )
  pre isLoggedIn();
  
+ /*
+  Registers a user in users map String to User
+  Receives name and password
+  Precondition checks if user's name doesn't already exist
+ */
 (*@
-\label{register:33}
+\label{register:54}
 @*)
  public register : String * String ==> ()
  register(u,p) == (
@@ -49,8 +70,14 @@ operations
  )
  pre u not in set dom users;
  
+ /*
+  Adds a User to users map
+  Receives a User
+  Precondition checks if user's name doesn't already exist in map
+  Post condition checks if user was added
+ */
 (*@
-\label{addUser:39}
+\label{addUser:66}
 @*)
  public addUser : User ==> ()
  addUser(user) == (
@@ -59,51 +86,89 @@ operations
  pre user.getName() not in set dom users
  post users = users~ ++ {user.getName() |-> user};
  
+ /*
+  Returns a user
+  Receives the name of the user to return
+  Precondition checks if name exists in users map
+ */
 (*@
-\label{getUser:46}
+\label{getUser:78}
 @*)
  public pure getUser : String ==> User
- getUser(u) == (return users(u);)
+ getUser(u) == (
+  return users(u);
+ )
  pre u in set dom users;
 
+ /*
+  Returns the name of the current logged in user
+ */
 (*@
-\label{getCurrentUser:50}
+\label{getCurrentUser:87}
 @*)
  public pure getCurrentUser : () ==> String
- getCurrentUser() == (return current_user;);
+ getCurrentUser() == (
+  return current_user;
+ );
  
+ /*
+  Returns users name to User map
+ */
 (*@
-\label{getUsers:53}
+\label{getUsers:95}
 @*)
  public pure getUsers : () ==> map String to User
- getUsers() == (return users;);
+ getUsers() == (
+  return users;
+ );
  
+ /*
+  Checks if there's a user logged in, returns true if yes
+ */
 (*@
-\label{isLoggedIn:56}
+\label{isLoggedIn:103}
 @*)
  private pure isLoggedIn : () ==> bool
- isLoggedIn() == (return current_user <> "" ;);
+ isLoggedIn() == (
+  return current_user <> "" ;
+ );
  
+ /*
+  Creates a ticket and adds it to ticketmanager, eventmanager and user's tickets
+  Receives the name of the ticket's event, the ticketmanager and the eventmanager
+  Precondition checks if there's a user logged in
+ */
 (*@
-\label{buyTicket:59}
+\label{buyTicket:113}
 @*)
  public buyTicket : String * TicketManager * EventManager ==> ()
  buyTicket(e,tm,em) == (
- dcl ticket : Ticket := new Ticket(current_user, em.getEvents()(e).getName());
- tm.addTicket(ticket);
- em.addTicket(ticket.getID(), e);
- users(current_user).buyTicket(em.getEvents()(e).getTicketPrice(), ticket.getID()))
+  dcl ticket : Ticket := new Ticket(current_user, em.getEvents()(e).getName());
+  tm.addTicket(ticket);
+  em.addTicket(ticket.getID(), e);
+  users(current_user).buyTicket(em.getEvents()(e).getTicketPrice(), ticket.getID()))
  pre isLoggedIn();
  
+ /*
+  Returns a set of nat for the logged in user's ticket's IDs
+  Precondition checks if there's a user logged in
+ */
 (*@
-\label{getUserTickets:67}
+\label{getUserTickets:125}
 @*)
  public pure getUserTickets :() ==> set of nat
- getUserTickets() == (return users(current_user).getTickets())
+ getUserTickets() == (
+  return users(current_user).getTickets()
+ )
  pre isLoggedIn();
  
+ /*
+  Returns a set of nat for the logged in user's ticket's IDs for a certain event
+  Receives the name of the event and the ticketmanager
+  Precondition checks if there's a user logged in
+ */
 (*@
-\label{getUserTicketsEvent:71}
+\label{getUserTicketsEvent:136}
 @*)
  public getUserTicketsEvent : String * TicketManager ==> set of nat
  getUserTicketsEvent(e,tm) == (
@@ -114,10 +179,16 @@ operations
     then tickets := tickets union {ticket};
   );
   return tickets;
- );
+ )
+ pre isLoggedIn();
  
+ /*
+  Adds 10 to an events popularity and removes 10 from logged in user's funds
+  Receives name of event to promote and eventmanager
+  Precondition checks if there's a user logged in
+ */
 (*@
-\label{promoteEvent:82}
+\label{promoteEvent:153}
 @*)
  public promoteEvent : String*EventManager ==> ()
  promoteEvent(e,em) == (
@@ -125,22 +196,23 @@ operations
   users(current_user).removeFunds(10);
  )
  pre isLoggedIn();
-(*@
-\label{createEvent:88}
-@*)
  
+ /*
+  Adds an event to user's event and to eventmanager
+  Receives an Event and the EventManager
+  Precondition checks if user is logged in
+ */
+(*@
+\label{createEvent:165}
+@*)
  public createEvent : Event*EventManager ==> ()
  createEvent(e,em) == (
   em.addEvent(e);
   users(current_user).addEvent(e.getName());
  )
  pre isLoggedIn();
- 
- 
- 
+
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end UserManager
 \end{vdmpp}
