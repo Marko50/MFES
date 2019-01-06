@@ -1,5 +1,5 @@
-nos alive-500-15-15/10/2019-0,3
-meo sudoeste-850-35-18/11/2019-1
-rock in rio-355-20-18/5/20120-2
-paredes de coura-100-10-11/6/2019-4
-festival de meda-80-7-25/9/2019-NONE
+nos alive-500-15-15/10/2019-0,3-10
+meo sudoeste-850-35-18/11/2019-1-0
+rock in rio-355-20-18/5/20120-2-10
+paredes de coura-100-10-11/6/2019-4-0
+festival de meda-80-7-25/9/2019-NONE-0

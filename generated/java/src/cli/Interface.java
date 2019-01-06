@@ -57,10 +57,13 @@ public class Interface{
     	System.out.println(Util.EVENT_EARNINGS_OPTION + " Check an event's earnings.");
     	System.out.println(Util.PROMOTE_EVENT_OPTION + " Promote an event.");
     	System.out.println(Util.MY_EVENTS_OPTION + " Check your events.");
-    	System.out.println(Util.MY_PURCHASED_TICKETS_OPTION + " Logout.");
-    	System.out.println(Util.MY_FUNDS_OPTION + " Logout.");
-    	System.out.println(Util.BUY_TICKET_OPTION + " Logout.");
-    	System.out.println(Util.SEARCH_TICKETS_EVENT_OPTION + " Logout.");
+    	System.out.println(Util.MY_PURCHASED_TICKETS_OPTION + " Check all your purchased tickets.");
+//    	System.out.println(Util.MY_FUNDS_OPTION + " Logout.");
+//    	System.out.println(Util.BUY_TICKET_OPTION + " Logout.");
+//    	System.out.println(Util.SEARCH_TICKETS_EVENT_OPTION + " Logout.");
+//    	System.out.println(Util.BUY_TICKET_OPTION + " Logout.");
+//    	System.out.println(Util.CREATE_EVENT_OPTION + " Logout.");
+//    	System.out.println(Util.SHOW_POPULAR_EVENTS_OPTION + " Logout.");
     	System.out.println(Util.LOGOUT_OPTION + " Logout.");
     	System.out.print("Opcao: ");
     	try {
@@ -73,30 +76,47 @@ public class Interface{
 				this.showEventEarnings();
 			}
 			else if(option.equals(Util.PROMOTE_EVENT_OPTION)) {
-				this.state = Util.PROMOTE_EVENT;
+				this.showPromoteEvent();
 			}
 			else if(option.equals(Util.MY_EVENTS_OPTION)) {
-				this.state = Util.MY_EVENTS;
+				this.showEvents();
 			}
 			else if(option.equals(Util.MY_PURCHASED_TICKETS_OPTION)) {
-				this.state = Util.MY_TICKETS;
+				this.showPurchasedTickets();
 			}
 			else if(option.equals(Util.MY_FUNDS_OPTION)) {
-				this.state = Util.MY_FUNDS;
+			
 			}
 			else if(option.equals(Util.BUY_TICKET_OPTION)) {
-				this.state = Util.BUY_TICKET;
+				
 			}
 			else if(option.equals(Util.SEARCH_TICKETS_EVENT_OPTION)) {
-				this.state = Util.SEARCH_TICKET_EVENT;
+			
+			}
+			else if(option.equals(Util.CREATE_EVENT_OPTION)) {
+			
+			}
+			else if(option.equals(Util.SHOW_POPULAR_EVENTS_OPTION)) {
+				
 			}
 		} catch (IOException e) {
 			this.state = Util.EXIT; 
 		}
     }
     
+    @SuppressWarnings({ "unused", "unchecked" })
+	private void showPurchasedTickets() {
+    	System.out.println(this.userManager.getCurrentUser());
+    	System.out.println(this.userManager.getUser(this.userManager.getCurrentUser()).getTickets().toString());
+    	this.userManager.getUser(this.userManager.getCurrentUser()).getTickets().forEach(v ->{
+    		Ticket ticket = (Ticket) this.ticketManager.getTickets().get((int) v);
+    		System.out.println(ticket.toString());
+    		System.out.println(ticket.getID() + "  for  " + ticket.getEvent());
+    	});
+    }
+    
     private void showEventEarnings() {
-    	System.out.println("Event: ");
+    	System.out.print("Event: ");
     	try {
 			String event = this.bufferedReader.readLine();
 			Number earnings = this.eventManager.getEarnings(event);
@@ -104,6 +124,25 @@ public class Interface{
 		} catch (IOException e) {
 			this.state = Util.EXIT; 
 		}
+    }
+    
+    private void showPromoteEvent() {
+    	System.out.print("Event: ");
+    	try {
+			String event = this.bufferedReader.readLine();
+			this.userManager.promoteEvent(event, this.eventManager);
+			System.out.println("Event " + event + " has been promoted");
+		} catch (IOException e) {
+			this.state = Util.EXIT; 
+		}
+    }
+    
+    @SuppressWarnings("unchecked")
+	private void showEvents() {
+    	this.userManager.getUser(this.userManager.getCurrentUser()).getEvents().forEach(v ->{
+    		String event = (String) v;
+    		System.out.println(event);
+    	});
     }
     
     private void showInitialMenu() {
@@ -276,6 +315,8 @@ public class Interface{
     			if(aux.getTickets().size() == 0)
     				line+=Util.NONE;
     			else line = line.substring(0, line.length() - 1); // eliminate the last ,
+    			line += Util.LINE_SEPARATOR;
+    			line += aux.getPopularity();
     			line +="\n";
        			try {
    					bufferedWriter.write(line);
@@ -328,6 +369,7 @@ public class Interface{
         } catch(IOException e){
             return Util.ERROR_READING_FILE + "  " + usersFilePath;
         } catch(NumberFormatException e){
+        	e.printStackTrace();
             return Util.INVALID_FUNDS_FILE + " OR " + Util.INVALID_ID_TICKET;
         }
         
@@ -369,8 +411,12 @@ public class Interface{
                 String price = lineParts[2];
                 String[] date_info = lineParts[3].split(Util.DATE_SEPARATOR);
                 String[] tickets = lineParts[4].split(Util.KEY_SEPARATOR);
+                String popularity = lineParts[5];
                 AgendaViral.Data.Date date = new AgendaViral.Data.Date(Integer.parseInt(date_info[0]), Integer.parseInt(date_info[1]), Integer.parseInt(date_info[2]));
                 Event event = new Event(name, Integer.parseInt(capacity), Integer.parseInt(price), date);
+                for(int i = 0; i < Integer.parseInt(popularity); i+= 10) {
+                	event.promote();
+                }
                 for(int i = 0; i < tickets.length && !tickets[0].equals(Util.NONE); i++){
                 	event.addTicket(Integer.parseInt(tickets[i]));               
                 }
@@ -384,7 +430,7 @@ public class Interface{
         } catch(IOException e){
             return Util.ERROR_READING_FILE + "  " + eventsFilePath;
         } catch(NumberFormatException e){
-            return Util.INVALID_FUNDS_FILE + " OR " + Util.INVALID_ID_TICKET;
+            return Util.INVALID_FUNDS_FILE + " OR " + Util.INVALID_ID_TICKET + " OR " + Util.INVALID_POPULARITY;
         }
         
     }

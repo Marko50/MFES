@@ -22,7 +22,7 @@ public class TicketManager {
 
     return Utils.copy(tickets);
   }
-
+  
   public void addTicket(final Ticket ticket) {
 
     tickets =
