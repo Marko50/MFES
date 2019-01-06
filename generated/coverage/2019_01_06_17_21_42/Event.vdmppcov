@@ -1,26 +1,26 @@
-class Event
+class Event is subclass of Data
+/*
+  Contains the core model of the event.
+*/
 types
--- TODO Define types here
  	public String = seq of char;
- 	public Date :: day : nat
- 								 month : nat
- 								 year : nat
-		inv d == d.year > 2018 and 
-				d.month <= 12 and
-				d.day <=  DaysOfMonth(d.year, d.month);
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
+	-- Event's name
 	private name : String;
+	-- Event's date
 	private date : Date;
+	-- Event's max number of tickets
 	private capacity : nat;
+	-- Event's popularity, used to sort display of events
 	private popularity: nat := 0;
+	-- Set of ticket IDs for the event
 	private tickets : set of nat := {};
 		inv card tickets <= capacity;
+	-- Ticket price to be subtracted from buyer
 	private ticketPrice : rat;
 operations
--- TODO Define operations here
+	-- Event constructor, receives event name, capacity, price and Date
 	public Event : String * nat * rat * Date ==> Event
 	Event(n, c, p, d) == (
 		name := n; 
@@ -32,31 +32,40 @@ operations
 	pre p > 0
 	post name = n and capacity = c and tickets = {} and popularity = 0;
 				
+	-- Returns Event's name
 	public pure getName : () ==> String
 	getName()==(
 		return name;
 	);
 	
+	-- Returns Event's max number of tickets
 	public pure getCapacity : () ==> nat
 	getCapacity()==(
 		return capacity;
 	);
 	
+	-- Returns ticket price for the event
 	public pure getTicketPrice : () ==> nat
 	getTicketPrice()==(
 		return ticketPrice;
 	);
 	
-	public pure getFillPercent : () ==> nat
+	-- Returns fill percentage, dividing number of tickets by capacity * 100
+	public pure getFillPercent : () ==> real
 	getFillPercent()==(
 		return (card (tickets) / capacity ) * 100;
 	);
 	
+	-- Returns set of ticket IDS
 	public pure getTickets : () ==> set of nat
 	getTickets() == (
 		return tickets;
 	);
 	
+	/*
+	 Adds a ticket ID to set of ticket IDS
+	 Pre condition checks if ticket amount is smaller than the max and if ticket ID isnt in set of IDs
+	*/
 	public addTicket : nat ==> ()
 	addTicket(ticket) == (
 		tickets := tickets union {ticket}
@@ -64,6 +73,10 @@ operations
 	pre card tickets <= capacity and ticket not in set tickets
 	post tickets = tickets~ union {ticket};
 	
+	/*
+	 Removes a ticket ID from set of ticket IDs
+	 Pre condition checks if ticket ID is in set of ticket IDs
+	*/
 	public removeTicket : nat ==> ()
 	removeTicket(i) == (
 		tickets:= tickets \ {i}; 
@@ -71,33 +84,31 @@ operations
 	pre i in set tickets
 	post tickets = tickets~ \ {i}; 
 	
+	-- Increases event popularity by 10
 	public promote : () ==> ()
-	promote() == (popularity := popularity + 10;)
+	promote() == (
+		popularity := popularity + 10;
+	)
 	pre popularity + 10 <= 100;
 	
-	public getEarnings : () ==> rat
-	getEarnings() == (
-		return card (tickets) * ticketPrice; 
+	-- Returns event's popularity
+	public getPopularity : () ==> nat
+	getPopularity() == (
+		return popularity;
 	);
 	
+	-- Returns earnings made by an event, multiplying number of tickets by ticket price
+	public getEarnings : () ==> rat
+	getEarnings() == (
+		return (card tickets) * ticketPrice; 
+	);
+	
+	-- Returns event's Date
 	public getDate : () ==> Date
-	getDate() == (return date;);
+	getDate() == (
+		return date;
+	);
 	
-functions
--- TODO Define functiones here
-	public DaysOfMonth : nat * nat -> nat
-	DaysOfMonth(y, m) == 
-		if (m = 2) then (
-			if isLeapYear(y) then 29
-			else 28
-		)
-		else if (m = 4 or m = 6 or m = 9 or m = 11) then 30
-		else 31;
-	
-	public isLeapYear : nat -> bool
-	isLeapYear (y) ==
-		y mod 4 = 0 and y mod 100 <> 0 or y mod 400 = 0;
-		
+functions		
 traces
--- TODO Define Combinatorial Test Traces here
 end Event
