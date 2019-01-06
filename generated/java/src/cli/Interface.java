@@ -54,6 +54,13 @@ public class Interface{
     
     private void showUserMenu() {
     	System.out.println("AGENDA VIRAL - USER MENU");
+    	System.out.println(Util.EVENT_EARNINGS_OPTION + " Check an event's earnings.");
+    	System.out.println(Util.PROMOTE_EVENT_OPTION + " Promote an event.");
+    	System.out.println(Util.MY_EVENTS_OPTION + " Check your events.");
+    	System.out.println(Util.MY_PURCHASED_TICKETS_OPTION + " Logout.");
+    	System.out.println(Util.MY_FUNDS_OPTION + " Logout.");
+    	System.out.println(Util.BUY_TICKET_OPTION + " Logout.");
+    	System.out.println(Util.SEARCH_TICKETS_EVENT_OPTION + " Logout.");
     	System.out.println(Util.LOGOUT_OPTION + " Logout.");
     	System.out.print("Opcao: ");
     	try {
@@ -62,6 +69,38 @@ public class Interface{
 				this.userManager.logout();
 				this.state = Util.INITIAL_MENU;
 			}
+			else if(option.equals(Util.EVENT_EARNINGS_OPTION)) {
+				this.showEventEarnings();
+			}
+			else if(option.equals(Util.PROMOTE_EVENT_OPTION)) {
+				this.state = Util.PROMOTE_EVENT;
+			}
+			else if(option.equals(Util.MY_EVENTS_OPTION)) {
+				this.state = Util.MY_EVENTS;
+			}
+			else if(option.equals(Util.MY_PURCHASED_TICKETS_OPTION)) {
+				this.state = Util.MY_TICKETS;
+			}
+			else if(option.equals(Util.MY_FUNDS_OPTION)) {
+				this.state = Util.MY_FUNDS;
+			}
+			else if(option.equals(Util.BUY_TICKET_OPTION)) {
+				this.state = Util.BUY_TICKET;
+			}
+			else if(option.equals(Util.SEARCH_TICKETS_EVENT_OPTION)) {
+				this.state = Util.SEARCH_TICKET_EVENT;
+			}
+		} catch (IOException e) {
+			this.state = Util.EXIT; 
+		}
+    }
+    
+    private void showEventEarnings() {
+    	System.out.println("Event: ");
+    	try {
+			String event = this.bufferedReader.readLine();
+			Number earnings = this.eventManager.getEarnings(event);
+			System.out.println("Earnings: " + earnings);
 		} catch (IOException e) {
 			this.state = Util.EXIT; 
 		}
@@ -142,6 +181,12 @@ public class Interface{
     	String closeUsers = this.closeUsers();
     	String closeEvents = this.closeEvents();
     	System.out.println(closeUsers + "  " + closeTickets + "  " + closeEvents);
+    	try {
+			this.bufferedReader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
     	return closeUsers.equals(Util.SUCCESS_MESSAGE) && closeTickets.equals(Util.SUCCESS_MESSAGE) && closeEvents.equals(Util.SUCCESS_MESSAGE);
     }
     
