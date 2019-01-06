@@ -70,6 +70,10 @@ public class Event {
 
     return tickets.size() * ticketPrice.doubleValue();
   }
+  
+  public Date getDate() {
+	  return date;
+  }
 
   public Event() {}
 

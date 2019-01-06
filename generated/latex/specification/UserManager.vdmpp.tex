@@ -50,55 +50,71 @@ operations
  pre u not in set dom users;
  
 (*@
+\label{addEvent:39}
+@*)
+(*@
 \label{getUser:39}
 @*)
- public pure getUser : String ==> User
- getUser(u) == (return users(u);)
- pre u in set dom users;
-
+(*@
+\label{addUser:39}
+@*)
+ public addUser : User ==> ()
+ addUser(user) == (
+  users := users ++ {user.getName() |-> user}
+ )
 (*@
 \label{getCurrentUser:43}
 @*)
- public pure getCurrentUser : () ==> String
- getCurrentUser() == (return current_user;);
+ pre user.getName() not in set dom users
+ post users = users~ ++ {user.getName() |-> user};
  
 (*@
 \label{getUsers:46}
 @*)
- public pure getUsers : () ==> map String to User
- getUsers() == (return users;);
- 
+ public pure getUser : String ==> User
+ getUser(u) == (return users(u);)
+ pre u in set dom users;
 (*@
 \label{isLoggedIn:49}
 @*)
- private pure isLoggedIn : () ==> bool
- isLoggedIn() == (return current_user <> "" ;);
- 
+
+ public pure getCurrentUser : () ==> String
+ getCurrentUser() == (return current_user;);
 (*@
 \label{buyTicket:52}
 @*)
+ 
+ public pure getUsers : () ==> map String to User
+ getUsers() == (return users;);
+ 
+ private pure isLoggedIn : () ==> bool
+ isLoggedIn() == (return current_user <> "" ;);
+ 
  public buyTicket : String * TicketManager * EventManager ==> ()
+(*@
+\label{getUserTickets:60}
+@*)
  buyTicket(e,tm,em) == (
  dcl ticket : Ticket := new Ticket(current_user, em.getEvents()(e).getName());
  tm.addTicket(ticket);
  em.addTicket(ticket.getID(), e);
+(*@
+\label{getUserTicketsEvent:64}
+@*)
  users(current_user).buyTicket(em.getEvents()(e).getTicketPrice(), ticket.getID()))
  pre isLoggedIn();
  
-(*@
-\label{getUserTickets:60}
-@*)
  public pure getUserTickets :() ==> set of nat
  getUserTickets() == (return users(current_user).getTickets())
  pre isLoggedIn();
  
-(*@
-\label{getUserTicketsEvent:64}
-@*)
  public getUserTicketsEvent : String * TicketManager ==> set of nat
  getUserTicketsEvent(e,tm) == (
   dcl tickets : set of nat := {};
   for all ticket in set (users(current_user).getTickets()) do 
+(*@
+\label{promoteEvent:75}
+@*)
   (
    if tm.getTickets()(ticket).getEvent() = e
     then tickets := tickets union {ticket};
@@ -106,9 +122,6 @@ operations
   return tickets;
  );
  
-(*@
-\label{promoteEvent:75}
-@*)
  public promoteEvent : String*EventManager ==> ()
  promoteEvent(e,em) == (
   em.getEvents()(e).promote();

@@ -1,0 +1,6 @@
+andre-100-12345678-0,1,2-nos alive,meo sudoeste,rock in rio
+pedro-37-123456789-3-nos alive
+joao-39-joao123-4-paredes de coura
+ricardo-85-joao-NONE-NONE
+adalberto-0-joao-NONE-NONE
+cenas-0-random-NONE-NONE

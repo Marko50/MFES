@@ -40,6 +40,11 @@ public class UserManager {
     users = MapUtil.override(Utils.copy(users), MapUtil.map(new Maplet(u, new User(u, p))));
   }
 
+  public void addUser(final User user) {
+
+    users = MapUtil.override(Utils.copy(users), MapUtil.map(new Maplet(user.getName(), user)));
+  }
+
   public User getUser(final String u) {
 
     return ((User) Utils.get(users, u));
