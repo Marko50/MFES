@@ -7,10 +7,15 @@ types
  	public String = seq of char;
 values
 instance variables
+	-- User's name
 	private name : String;
+	-- User's funds
 	private funds : nat := 0;
+	-- User's password
 	private password : String;
+	-- Set of user's event names
 	private events : set of String := {};
+	-- Set of user's ticket IDs
 	private tickets : set of nat := {};
 operations
 	-- User constructor, receives Strings for user name and password
@@ -64,6 +69,11 @@ operations
 		return password;
 	);
 	
+	/*
+		Adds funds to user
+		Pre condition checks if funds + amount to add is below or equal to 10000
+		Post condition checks if funds were added
+	*/
 	public addFunds : nat ==> ()
 	addFunds(f) == (
 		funds := funds + f;
@@ -71,6 +81,11 @@ operations
 	pre funds + f <= 10000
 	post funds = funds~ + f;
 	
+	/*
+		Removes funds from user
+		Pre condition checks if funds - amount to remove is above or equal to 0
+		Post condition checks if funds were removed
+	*/
 	public removeFunds : nat ==> ()
 	removeFunds(f) == (
 		funds := funds - f;
@@ -78,17 +93,30 @@ operations
 	pre funds - f >= 0
 	post funds = funds~ - f;
 	
+	/*
+		Returns set of nat for user's ticket ID's
+	*/
 	public pure getTickets : () ==> set of nat
 		getTickets() == (
 		return tickets;
 	);
 	
+	/*
+		Buys a ticket and adds it to user's tickets
+		Receives ticket price and ticket ID
+	*/
 	public buyTicket : nat * nat ==> ()
 	buyTicket(ticketPrice,t) == (
 		removeFunds(ticketPrice);
 		addTicket(t);
 	);
 	
+	/*
+		Adds a ticket ID to user's tickets
+		Receives ticket ID
+		Pre condition checks if ticket isn't in user's tickets
+		Post condition checks if ticket was added to user's tickets
+	*/
 	public addTicket : nat ==> ()
 	addTicket(ticket) == (
 		tickets := tickets union {ticket};
@@ -96,6 +124,12 @@ operations
 	pre ticket not in set tickets
 	post tickets = tickets~ union {ticket};
 	
+	/*
+		Removes ticket from user's tickets
+		Receives ticket ID to remove
+		Pre condition checks if ticket is in user's tickets
+		Post condition checks if ticket was removed
+	*/
 	public removeTicket : nat ==> ()
 	removeTicket(i) == (
 		tickets:= tickets \ {i}; 
