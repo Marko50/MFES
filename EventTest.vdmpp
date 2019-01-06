@@ -1,0 +1,142 @@
+class EventTest is subclass of Data
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+ e : Event := new Event("evento1", 15, 10, mk_Date(10,1,2019));
+ e2 : Event := new Event("evento2", 15, 10, mk_Date(29,2,2020));
+ e3 : Event := new Event("evento3", 15, 10, mk_Date(29,4,2020));
+ e4 : Event := new Event("evento4", 15, 10, mk_Date(28,2,2021));
+ u : User := new User("dank", "memes");
+ em : EventManager := new EventManager({ "evento1" |-> e, "evento2" |-> e2, "evento3" |-> e3, "evento4" |-> e4});
+ um : UserManager := new UserManager({"dank" |-> u});
+ tm : TicketManager := new TicketManager({|->});
+operations
+-- TODO Define operations here
+	private assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+		
+	private testGetDate: () ==> ()
+	testGetDate() == (
+		assertTrue(e.getDate() = mk_Date(10,1,2019));
+	);	
+	
+	private testGetName: () ==> ()
+	testGetName() == (
+		assertTrue(e.getName() = "evento1");
+	);
+	
+	private testCapacity: () ==> ()
+	testCapacity() == (
+		assertTrue(e.getCapacity() = 15);
+	);
+	
+	private testGetTicketPrice: () ==> ()
+	testGetTicketPrice() == (
+		assertTrue(e.getTicketPrice() = 10);
+	);
+	
+	private testGetTickets : () ==> ()
+	testGetTickets() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.buyTicket("evento1",tm,em);
+		um.buyTicket("evento1",tm,em);
+		assertTrue(e.getTickets() = {6,7});
+	);
+	
+	private testRemoveTicket : () ==> ()
+	testRemoveTicket() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.buyTicket("evento1",tm,em);
+		e.removeTicket(8);
+		assertTrue(e.getTickets() = {});
+	);
+	
+	private testGetFillPercent : () ==> ()
+	testGetFillPercent() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.buyTicket("evento1",tm,em);
+		assertTrue(em.getEventFillPercent("evento1") = (1 / 15) * 100);
+	);
+	
+	private testGetEarnings : () ==> ()
+	testGetEarnings() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.buyTicket("evento1",tm,em);
+		assertTrue(em.getEarnings("evento1") = 10);
+	);
+	
+	private testPromotion : () ==> ()
+	testPromotion() == (
+		e.promote();
+		assertTrue(e.getPopularity() = 10);
+	);
+	
+	private testManagerGetEvent : () ==> ()
+	testManagerGetEvent() == (
+		assertTrue(em.getEvent("evento1") = e);
+	);
+	
+	private testManagerAddEvent : () ==> ()
+	testManagerAddEvent() == (
+		dcl eventTest : Event := new Event("eventTest",10,10,mk_Date(1,1,2021));
+		em.addEvent(eventTest);
+		assertTrue(em.getEvent("eventTest") = eventTest);
+	);
+	
+	private testManagerRemoveEvent : () ==> ()
+	testManagerRemoveEvent() == (
+		dcl eventTest : Event := new Event("eventTest",10,10,mk_Date(1,1,2021));
+		em.addEvent(eventTest);
+		em.removeEvent("eventTest");
+		assertTrue(card dom em.getEvents() = 4);
+	);
+	
+	private testManagerGetEventTickets : () ==> ()
+	testManagerGetEventTickets() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.buyTicket("evento1",tm,em);
+		um.buyTicket("evento1",tm,em);
+		assertTrue(card em.getEventTickets("evento1") = 2);
+	);
+	
+	private testManagerGetEventTicketsUser : () ==> ()
+	testManagerGetEventTicketsUser() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.buyTicket("evento1",tm,em);
+		um.buyTicket("evento1",tm,em);
+		um.buyTicket("evento2",tm,em);
+		assertTrue(card em.getEventTicketsUser("evento1","dank",tm) = 2);
+	);
+	
+	public static main: () ==> ()
+	main() == (
+		new EventTest().testGetDate();
+		new EventTest().testGetName();
+		new EventTest().testCapacity();
+		new EventTest().testGetTicketPrice();
+		new EventTest().testGetTickets();
+		new EventTest().testRemoveTicket();
+		new EventTest().testGetFillPercent();
+		new EventTest().testGetEarnings();
+		new EventTest().testPromotion();
+		new EventTest().testManagerGetEvent();
+		new EventTest().testManagerAddEvent();
+		new EventTest().testManagerRemoveEvent();
+		new EventTest().testManagerGetEventTickets();
+		new EventTest().testManagerGetEventTicketsUser();
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end EventTest

@@ -36,13 +36,6 @@ operations
 	)
 	pre u not in set dom users;
 	
-	public addUser : User ==> ()
-	addUser(user) == (
-		users := users ++ {user.getName() |-> user}
-	)
-	pre user.getName() not in set dom users
-	post users = users~ ++ {user.getName() |-> user};
-	
 	public pure getUser : String ==> User
 	getUser(u) == (return users(u);)
 	pre u in set dom users;

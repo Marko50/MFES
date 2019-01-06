@@ -87,7 +87,7 @@ operations
 (*@
 \label{getEventFillPercent:62}
 @*)
- public getEventFillPercent : String ==> nat
+ public getEventFillPercent : String ==> rat
  getEventFillPercent(e) == (return events(e).getFillPercent();)
  pre eventExists(e);
  

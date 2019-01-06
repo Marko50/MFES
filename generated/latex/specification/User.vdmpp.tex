@@ -126,14 +126,6 @@ operations
  pre i in set tickets
  post tickets = tickets~ \ {i}; 
  
- 
-(*@
-\label{promoteEvent:90}
-@*)
- public promoteEvent : () ==> ()
- promoteEvent() == (removeFunds(10))
- pre funds - 10 >= 0;
- 
 functions
 -- TODO Define functiones here
 traces

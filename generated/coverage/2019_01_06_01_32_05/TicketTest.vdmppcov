@@ -1,0 +1,55 @@
+class TicketTest is subclass of Data
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+ e : Event := new Event("evento1", 15, 10, mk_Date(21,2,2019));
+ u : User := new User("dank", "memes");
+ em : EventManager := new EventManager({ "cenas" |-> e });
+ um : UserManager := new UserManager({"dank" |-> u});
+ tm : TicketManager := new TicketManager({|->});
+ t : Ticket := new Ticket("dank", "evento1");
+operations
+-- TODO Define operations here
+	private assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+		
+	private testGetID : () ==> ()
+	testGetID() == (
+		assertTrue(t.getID() = 1);
+	);
+	
+	private testGetOwner : () ==> ()
+	testGetOwner() == (
+		assertTrue(t.getOwner() = "dank");
+	);
+	
+	private testGetEvent : () ==> ()
+	testGetEvent() == (
+		assertTrue(t.getEvent() = "evento1");
+	);
+	
+	private testRemoveTicket : () ==> ()
+	testRemoveTicket() == (
+		dcl previousCard : nat := card dom tm.getTickets();
+		dcl ticketTest : Ticket := new Ticket("dank", "evento3");
+		tm.addTicket(ticketTest);
+		tm.removeTicket(ticketTest.getID());
+		assertTrue(card dom tm.getTickets() = previousCard);
+	);
+	
+	public static main: () ==> ()
+	main() == (
+		new TicketTest().testGetID();
+		new TicketTest().testGetOwner();
+		new TicketTest().testGetEvent();
+		new TicketTest().testRemoveTicket();
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end TicketTest

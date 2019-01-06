@@ -84,11 +84,6 @@ public class User {
     tickets = SetUtil.diff(Utils.copy(tickets), SetUtil.set(i));
   }
 
-  public void promoteEvent() {
-
-    removeFunds(10L);
-  }
-
   public User() {}
 
   public String toString() {

@@ -12,7 +12,6 @@ import java.util.Set;
 import java.io.FileReader;
 
 import AgendaViral.*;
-import AgendaViral.Event.Date;
 import utils.Util;
 
 public class Interface{	
@@ -224,7 +223,7 @@ public class Interface{
        		   // process the line.  name - capacity - price- day/month/year
        			Event aux = (Event) v;
        			String line = aux.getName() + Util.LINE_SEPARATOR + aux.getCapacity() + Util.LINE_SEPARATOR + aux.getTicketPrice() + Util.LINE_SEPARATOR;
-       			Date date = aux.getDate();
+       			AgendaViral.Data.Date date = aux.getDate();
        			line += date.day + Util.DATE_SEPARATOR + date.month + Util.DATE_SEPARATOR + date.year+ Util.LINE_SEPARATOR;
        			for (Number s: (Set<Number>) aux.getTickets()) {
     				line+=s+Util.KEY_SEPARATOR;
@@ -325,7 +324,7 @@ public class Interface{
                 String price = lineParts[2];
                 String[] date_info = lineParts[3].split(Util.DATE_SEPARATOR);
                 String[] tickets = lineParts[4].split(Util.KEY_SEPARATOR);
-                Date date = new Date(Integer.parseInt(date_info[0]), Integer.parseInt(date_info[1]), Integer.parseInt(date_info[2]));
+                AgendaViral.Data.Date date = new AgendaViral.Data.Date(Integer.parseInt(date_info[0]), Integer.parseInt(date_info[1]), Integer.parseInt(date_info[2]));
                 Event event = new Event(name, Integer.parseInt(capacity), Integer.parseInt(price), date);
                 for(int i = 0; i < tickets.length && !tickets[0].equals(Util.NONE); i++){
                 	event.addTicket(Integer.parseInt(tickets[i]));               

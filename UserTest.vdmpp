@@ -1,0 +1,159 @@
+class UserTest is subclass of Data
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+ e : Event := new Event("evento1", 15, 10, mk_Date(10,1,2019));
+ e2 : Event := new Event("evento2", 15, 10, mk_Date(29,2,2020));
+ e3 : Event := new Event("evento3", 15, 10, mk_Date(29,4,2020));
+ e4 : Event := new Event("evento4", 15, 10, mk_Date(28,2,2021));
+ u : User := new User("dank", "memes");
+ em : EventManager := new EventManager({ "evento1" |-> e, "evento2" |-> e2, "evento3" |-> e3, "evento4" |-> e4});
+ um : UserManager := new UserManager({"dank" |-> u});
+ tm : TicketManager := new TicketManager({|->});
+ t : Ticket := new Ticket("dank", "evento1");
+operations
+-- TODO Define operations here
+	private assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+		
+	private testGetName : () ==> ()
+	testGetName() == (
+		assertTrue(u.getName() = "dank");
+	);
+	
+	private testAddFunds : () ==> ()
+	testAddFunds() == (
+		u.addFunds(100);
+		assertTrue(u.getFunds() = 100);
+	);
+	
+	private testRemoveFunds : () ==> ()
+	testRemoveFunds() == (
+		u.addFunds(100);
+		u.removeFunds(10);
+		assertTrue(u.getFunds() = 90);
+	);
+	
+	private testGetPassword : () ==> ()
+	testGetPassword() == (
+		assertTrue(u.getPassword() = "memes");
+	);
+	
+	private testAddEvent : () ==> ()
+	testAddEvent() == (
+		u.addEvent("eventTest1");
+		u.addEvent("eventTest2");
+		assertTrue(u.getEvents() = {"eventTest1","eventTest2"});
+	);
+	
+	private testRemoveEvent : () ==> ()
+	testRemoveEvent() == (
+		u.addEvent("eventTest1");
+		u.addEvent("eventTest2");
+		u.removeEvent("eventTest1");
+		assertTrue(u.getEvents() = {"eventTest2"});
+	);
+	
+	private testAddTicket : () ==> ()
+	testAddTicket() == (
+		u.addTicket(0);
+		u.addTicket(1);
+		assertTrue(u.getTickets() = {0,1});
+	);
+	
+	private testRemoveTicket : () ==> ()
+	testRemoveTicket() == (
+		u.addTicket(0);
+		u.addTicket(1);
+		u.removeTicket(0);
+		assertTrue(u.getTickets() = {1});
+	);
+	
+	private testBuyTicket : () ==> ()
+	testBuyTicket() == (
+		u.addFunds(100);
+		u.buyTicket(10,0);
+		assertTrue(u.getTickets() = {0});
+		assertTrue(u.getFunds() = 90);
+	);
+	
+	private testLogout : () ==> ()
+	testLogout() == (
+		assertTrue(um.login("dank", "memes"));
+		assertTrue(um.getCurrentUser() = "dank");
+		um.logout();
+		assertTrue(um.getCurrentUser() = "");
+	);
+	
+	private testWrongPass : () ==> ()
+	testWrongPass() == (
+		um.register("testUser", "testPass");
+		assertTrue(not um.login("testUser", "wrongpass"));
+	);
+	
+	private testPromote : () ==> ()
+	testPromote() == (
+		u.addFunds(100);
+		assertTrue(um.login("dank", "memes"));
+		um.promoteEvent("evento3", em);
+		assertTrue(e3.getPopularity() = 10);
+	);
+	
+	private testGetUser : () ==> ()
+	testGetUser() == (
+		assertTrue(um.getUser("dank") = u);
+	);
+	
+	private testGetUsers : () ==> ()
+	testGetUsers() == (
+		assertTrue(um.getUsers()("dank") = u);
+	);
+	
+	private testGetUserTickets : () ==> ()
+	testGetUserTickets() == (
+		assertTrue(um.login("dank","memes"));
+		u.addFunds(100);
+		u.buyTicket(10,0);
+		assertTrue(um.getUserTickets() = {0});
+		assertTrue(u.getFunds() = 90);
+	);
+	
+	private testGetUserTicketsEvent : () ==> ()
+	testGetUserTicketsEvent() == (
+		assertTrue(um.login("dank","memes"));
+		u.addFunds(100);
+		um.buyTicket("evento4", tm, em);
+		um.buyTicket("evento4", tm, em);
+		um.buyTicket("evento4", tm, em);
+		um.buyTicket("evento3", tm, em);
+		assertTrue(um.getUserTicketsEvent("evento4", tm) = {33, 34, 35});
+	);
+	
+	public static main: () ==> ()
+	main() == (
+		new UserTest().testGetName();
+		new UserTest().testAddFunds();
+		new UserTest().testRemoveFunds();
+		new UserTest().testGetPassword();
+		new UserTest().testAddEvent();
+		new UserTest().testRemoveEvent();
+		new UserTest().testAddTicket();
+		new UserTest().testRemoveTicket();
+		new UserTest().testBuyTicket();
+		new UserTest().testLogout();
+		new UserTest().testWrongPass();
+		new UserTest().testPromote();
+		new UserTest().testGetUser();
+		new UserTest().testGetUsers();
+		new UserTest().testGetUserTickets();
+		new UserTest().testGetUserTicketsEvent();
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end UserTest

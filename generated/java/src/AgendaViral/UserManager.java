@@ -96,7 +96,7 @@ public class UserManager {
   public void promoteEvent(final String e, final EventManager em) {
 
     ((Event) Utils.get(em.getEvents(), e)).promote();
-    ((User) Utils.get(users, current_user)).promoteEvent();
+    ((User) Utils.get(users, current_user)).removeFunds(10L);
   }
 
   public UserManager() {}
