@@ -42,7 +42,17 @@ operations
 	removeTicket(i) == (
 		tickets:= {i} <-: tickets; 
 	)
-	pre i in set dom tickets
+	pre i in set dom tickets;
+	
+	/*
+		Returns a specific ticket, receives id for ticket ID
+		pre condition checks if ticket id is in map domain
+	*/
+	public getTicket : nat ==> Ticket
+	getTicket(i) == (
+		return tickets(i);
+	)
+	pre i in set dom tickets;
 	
 functions
 traces

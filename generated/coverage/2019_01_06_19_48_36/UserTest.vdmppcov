@@ -130,7 +130,7 @@ operations
 		um.buyTicket("evento4", tm, em);
 		um.buyTicket("evento4", tm, em);
 		um.buyTicket("evento3", tm, em);
-		assertTrue(um.getUserTicketsEvent("evento4", tm) = {33, 34, 35});
+		assertTrue(um.getUserTicketsEvent("evento4", tm) = {35, 36, 37});
 	);
 	
 	private testAddUser : () ==> ()

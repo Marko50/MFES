@@ -45,7 +45,7 @@ operations
 		assertTrue(um.login("dank", "memes"));
 		um.buyTicket("evento1",tm,em);
 		um.buyTicket("evento1",tm,em);
-		assertTrue(e.getTickets() = {6,7});
+		assertTrue(e.getTickets() = {8,9});
 	);
 	
 	private testRemoveTicket : () ==> ()
@@ -53,7 +53,7 @@ operations
 		u.addFunds(100);
 		assertTrue(um.login("dank", "memes"));
 		um.buyTicket("evento1",tm,em);
-		e.removeTicket(8);
+		e.removeTicket(10);
 		assertTrue(e.getTickets() = {});
 	);
 	

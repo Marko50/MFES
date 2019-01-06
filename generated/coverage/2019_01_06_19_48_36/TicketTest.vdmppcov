@@ -32,6 +32,13 @@ operations
 		assertTrue(t.getEvent() = "evento1");
 	);
 	
+	private testGetTicket : () ==> ()
+	testGetTicket() == (
+		dcl ticket_test : Ticket := new Ticket("dank", "evento2");
+		tm.addTicket(ticket_test);
+		assertTrue(tm.getTicket(7) = ticket_test);
+	);
+	
 	private testRemoveTicket : () ==> ()
 	testRemoveTicket() == (
 		dcl previousCard : nat := card dom tm.getTickets();
@@ -47,6 +54,7 @@ operations
 		new TicketTest().testGetOwner();
 		new TicketTest().testGetEvent();
 		new TicketTest().testRemoveTicket();
+		new TicketTest().testGetTicket();
 	);
 functions
 -- TODO Define functiones here
