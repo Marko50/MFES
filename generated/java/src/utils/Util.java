@@ -29,7 +29,8 @@ public class Util {
     public static String CREATE_EVENT_OPTION = "8";
     public static String SHOW_POPULAR_EVENTS_OPTION = "9";
     public static String EVENT_OCUPATION_OPTION = "10";
-    public static String LOGOUT_OPTION = "11";
+    public static String ADD_FUNDS_OPTION = "11";
+    public static String LOGOUT_OPTION = "12";
 
     
     public static String INITIAL_MENU = "0";
