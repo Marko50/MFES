@@ -1,21 +1,22 @@
 \begin{vdmpp}[breaklines=true]
 class User
+/*
+  Represents a user.
+  Defines the variables and operations available to users.
+*/
 types
--- TODO Define types here
   public String = seq of char;
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
  private name : String;
  private funds : nat := 0;
  private password : String;
  private events : set of String := {};
  private tickets : set of nat := {};
 operations
--- TODO Define operations here
+ -- User constructor, receives Strings for user name and password
 (*@
-\label{User:16}
+\label{User:17}
 @*)
  public User: String * String ==> User
  User(n,p) == (
@@ -25,44 +26,60 @@ operations
  )
  post name = n and password = p and tickets = {} and events = {};
  
+ -- Returns set of Strings representing the names of user's events
 (*@
-\label{getEvents:24}
+\label{getEvents:26}
 @*)
  public pure getEvents : () ==> set of String
- getEvents() == (return events;);
+ getEvents() == (
+  return events;
+ );
  
+ /*
+  Adds an event to user's events set of String
+  pre condition checks if event isn't already in set
+ */ 
 (*@
-\label{addEvent:27}
+\label{addEvent:35}
 @*)
  public addEvent: String ==> ()
- addEvent(e) == (events := events union {e})
+ addEvent(e) == (
+  events := events union {e}
+ )
  pre e not in set events;
  
+ /*
+  Removes an event from user's events
+  pre condition checks if event is in set
+ */ 
 (*@
-\label{removeEvent:31}
+\label{removeEvent:45}
 @*)
  public removeEvent : String ==> ()
  removeEvent(e) == (events := events \ {e})
  pre e in set events;
  
+ -- Returns user's name
 (*@
-\label{getName:35}
+\label{getName:50}
 @*)
  public pure getName : () ==> String
  getName() == (
   return name;
  );
  
+ -- Returns user's funds
 (*@
-\label{getFunds:40}
+\label{getFunds:56}
 @*)
  public pure getFunds : () ==> nat
  getFunds() == (
   return funds;
  );
  
+ -- Returns user's password
 (*@
-\label{getPassword:45}
+\label{getPassword:62}
 @*)
  public pure getPassword : () ==> String
  getPassword() == (
@@ -70,7 +87,7 @@ operations
  );
  
 (*@
-\label{addFunds:50}
+\label{addFunds:67}
 @*)
  public addFunds : nat ==> ()
  addFunds(f) == (
@@ -80,7 +97,7 @@ operations
  post funds = funds~ + f;
  
 (*@
-\label{removeFunds:57}
+\label{removeFunds:74}
 @*)
  public removeFunds : nat ==> ()
  removeFunds(f) == (
@@ -90,7 +107,7 @@ operations
  post funds = funds~ - f;
  
 (*@
-\label{getTickets:64}
+\label{getTickets:81}
 @*)
  public pure getTickets : () ==> set of nat
   getTickets() == (
@@ -98,7 +115,7 @@ operations
  );
  
 (*@
-\label{buyTicket:69}
+\label{buyTicket:86}
 @*)
  public buyTicket : nat * nat ==> ()
  buyTicket(ticketPrice,t) == (
@@ -107,7 +124,7 @@ operations
  );
  
 (*@
-\label{addTicket:75}
+\label{addTicket:92}
 @*)
  public addTicket : nat ==> ()
  addTicket(ticket) == (
@@ -117,7 +134,7 @@ operations
  post tickets = tickets~ union {ticket};
  
 (*@
-\label{removeTicket:82}
+\label{removeTicket:99}
 @*)
  public removeTicket : nat ==> ()
  removeTicket(i) == (
@@ -127,8 +144,6 @@ operations
  post tickets = tickets~ \ {i}; 
  
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end User
 \end{vdmpp}

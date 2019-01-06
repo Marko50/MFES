@@ -99,6 +99,12 @@ public class UserManager {
     ((User) Utils.get(users, current_user)).removeFunds(10L);
   }
 
+  public void createEvent(final Event e, final EventManager em) {
+
+    em.addEvent(e);
+    ((User) Utils.get(users, current_user)).addEvent(e.getName());
+  }
+
   public UserManager() {}
 
   public String toString() {

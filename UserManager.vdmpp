@@ -157,6 +157,18 @@ operations
 	)
 	pre isLoggedIn();
 	
+	/*
+		Adds an event to user's event and to eventmanager
+		Receives an Event and the EventManager
+		Precondition checks if user is logged in
+	*/
+	public createEvent : Event*EventManager ==> ()
+	createEvent(e,em) == (
+		em.addEvent(e);
+		users(current_user).addEvent(e.getName());
+	)
+	pre isLoggedIn();
+
 functions
 traces
 end UserManager

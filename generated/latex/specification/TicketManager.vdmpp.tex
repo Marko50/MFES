@@ -1,16 +1,17 @@
 \begin{vdmpp}[breaklines=true]
 class TicketManager
+/*
+  Contains every ticket.
+  Defines the operations available related to tickets.
+*/
 types
--- TODO Define types here
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
  private tickets : map nat to Ticket := {|->};
 operations
--- TODO Define operations here
+ -- TicketManager constructor, receives map nat (ticket ID) to Ticket
 (*@
-\label{TicketManager:11}
+\label{TicketManager:12}
 @*)
  public TicketManager : map nat to Ticket ==> TicketManager
   TicketManager(ts) == (
@@ -19,16 +20,22 @@ operations
   )
  post tickets = ts;
   
+ -- Returns map nat (ticketID) to Ticket
 (*@
-\label{getTickets:18}
+\label{getTickets:20}
 @*)
  public pure getTickets : () ==> map nat to Ticket
  getTickets() == (
   return tickets;
  );
  
+ /*
+  Adds a ticket to tickets map
+  pre condition checks if ticket id isnt in tickets map
+  post condition checks if ticket was added to map
+ */ 
 (*@
-\label{addTicket:23}
+\label{addTicket:30}
 @*)
  public addTicket : Ticket ==> ()
  addTicket(ticket) == (
@@ -37,17 +44,20 @@ operations
  pre ticket.getID() not in set dom tickets
  post tickets = tickets~ ++ {ticket.getID() |-> ticket};
  
+ /*
+  Removes a ticket from tickets map
+  pre condition checks if ticket id is in map
+ */
 (*@
-\label{removeTicket:30}
+\label{removeTicket:41}
 @*)
  public removeTicket : nat ==> ()
  removeTicket(i) == (
   tickets:= {i} <-: tickets; 
  )
+ pre i in set dom tickets
  
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end TicketManager
 \end{vdmpp}
