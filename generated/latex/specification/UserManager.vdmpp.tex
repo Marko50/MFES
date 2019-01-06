@@ -123,7 +123,18 @@ operations
  promoteEvent(e,em) == (
   em.getEvents()(e).promote();
   users(current_user).removeFunds(10);
- );
+ )
+ pre isLoggedIn();
+(*@
+\label{createEvent:88}
+@*)
+ 
+ public createEvent : Event*EventManager ==> ()
+ createEvent(e,em) == (
+  em.addEvent(e);
+  users(current_user).addEvent(e.getName());
+ )
+ pre isLoggedIn();
  
  
  

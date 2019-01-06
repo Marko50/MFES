@@ -1,23 +1,29 @@
 \begin{vdmpp}[breaklines=true]
 class Event is subclass of Data
+/*
+  Contains the core model of the event.
+*/
 types
--- TODO Define types here
   public String = seq of char;
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
+ -- Event's name
  private name : String;
+ -- Event's date
  private date : Date;
+ -- Event's max number of tickets
  private capacity : nat;
+ -- Event's popularity, used to sort display of events
  private popularity: nat := 0;
+ -- Set of ticket IDs for the event
  private tickets : set of nat := {};
   inv card tickets <= capacity;
+ -- Ticket price to be subtracted from buyer
  private ticketPrice : rat;
 operations
--- TODO Define operations here
+ -- Event constructor, receives event name, capacity, price and Date
 (*@
-\label{Event:18}
+\label{Event:24}
 @*)
  public Event : String * nat * rat * Date ==> Event
  Event(n, c, p, d) == (
@@ -30,48 +36,57 @@ operations
  pre p > 0
  post name = n and capacity = c and tickets = {} and popularity = 0;
     
+ -- Returns Event's name
 (*@
-\label{getName:29}
+\label{getName:36}
 @*)
  public pure getName : () ==> String
  getName()==(
   return name;
  );
  
+ -- Returns Event's max number of tickets
 (*@
-\label{getCapacity:34}
+\label{getCapacity:42}
 @*)
  public pure getCapacity : () ==> nat
  getCapacity()==(
   return capacity;
  );
  
+ -- Returns ticket price for the event
 (*@
-\label{getTicketPrice:39}
+\label{getTicketPrice:48}
 @*)
  public pure getTicketPrice : () ==> nat
  getTicketPrice()==(
   return ticketPrice;
  );
  
+ -- Returns fill percentage, dividing number of tickets by capacity * 100
 (*@
-\label{getFillPercent:44}
+\label{getFillPercent:54}
 @*)
  public pure getFillPercent : () ==> real
  getFillPercent()==(
   return (card (tickets) / capacity ) * 100;
  );
  
+ -- Returns set of ticket IDS
 (*@
-\label{getTickets:49}
+\label{getTickets:60}
 @*)
  public pure getTickets : () ==> set of nat
  getTickets() == (
   return tickets;
  );
  
+ /*
+  Adds a ticket ID to set of ticket IDS
+  Pre condition checks if ticket amount is smaller than the max and if ticket ID isnt in set of IDs
+ */
 (*@
-\label{addTicket:54}
+\label{addTicket:69}
 @*)
  public addTicket : nat ==> ()
  addTicket(ticket) == (
@@ -80,8 +95,12 @@ operations
  pre card tickets <= capacity and ticket not in set tickets
  post tickets = tickets~ union {ticket};
  
+ /*
+  Removes a ticket ID from set of ticket IDs
+  Pre condition checks if ticket ID is in set of ticket IDs
+ */
 (*@
-\label{removeTicket:61}
+\label{removeTicket:80}
 @*)
  public removeTicket : nat ==> ()
  removeTicket(i) == (
@@ -90,8 +109,9 @@ operations
  pre i in set tickets
  post tickets = tickets~ \ {i}; 
  
+ -- Increases event popularity by 10
 (*@
-\label{promote:68}
+\label{promote:88}
 @*)
  public promote : () ==> ()
  promote() == (
@@ -99,34 +119,34 @@ operations
  )
  pre popularity + 10 <= 100;
  
+ -- Returns event's popularity
 (*@
-\label{getPopularity:74}
+\label{getPopularity:95}
 @*)
  public getPopularity : () ==> nat
  getPopularity() == (
   return popularity;
  );
  
+ -- Returns earnings made by an event, multiplying number of tickets by ticket price
 (*@
-\label{getEarnings:79}
+\label{getEarnings:101}
 @*)
  public getEarnings : () ==> rat
  getEarnings() == (
   return (card tickets) * ticketPrice; 
  );
  
+ -- Returns event's Date
 (*@
-\label{getDate:84}
+\label{getDate:107}
 @*)
  public getDate : () ==> Date
  getDate() == (
   return date;
  );
  
-functions
--- TODO Define functiones here
-  
+functions  
 traces
--- TODO Define Combinatorial Test Traces here
 end Event
 \end{vdmpp}

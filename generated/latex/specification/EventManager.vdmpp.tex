@@ -1,17 +1,19 @@
 \begin{vdmpp}[breaklines=true]
 class EventManager
+/*
+  Contains every event.
+  Defines the operations available related to events.
+*/
 types
--- TODO Define types here
  public String = seq of char;
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
+ -- map of event name String to Event, representing every event created
  private events : map String to Event := {|->};
 operations
--- TODO Define operations here
+ -- Event manager constructor, receives a map String to Event
 (*@
-\label{EventManager:12}
+\label{EventManager:14}
 @*)
  public EventManager : map String to Event ==> EventManager
  EventManager(evs) == (
@@ -20,16 +22,18 @@ operations
  )
  post events = evs;
  
+ -- Returns map String to Event representing every event
 (*@
-\label{getEvents:19}
+\label{getEvents:22}
 @*)
  public pure getEvents : () ==> map String to Event
  getEvents() == (
   return events;
  );
  
+ -- Returns a specific Event, receives String for event's name
 (*@
-\label{getEvent:24}
+\label{getEvent:28}
 @*)
  public pure getEvent : String ==> Event
  getEvent (e) == (
@@ -37,8 +41,13 @@ operations
  )
  pre e in set dom events;
  
+ /*
+  Adds an event to events map
+  Pre condition checks if there isn't an event with same name
+  Post condition checks if event was added to map
+ */
 (*@
-\label{addEvent:30}
+\label{addEvent:39}
 @*)
  public addEvent : Event ==> ()
  addEvent(event) == (
@@ -47,8 +56,13 @@ operations
  pre event.getName() not in set dom events
  post events = events~ ++ {event.getName() |-> event};
  
+ /*
+  Removes an event from events map
+  Pre condition checks if event exists in map
+  Post condition checks if event was removed
+ */
 (*@
-\label{removeEvent:37}
+\label{removeEvent:51}
 @*)
  public removeEvent : String ==> ()
  removeEvent(e) == (
@@ -57,21 +71,35 @@ operations
  pre e in set dom events
  post events = {e} <-: events~; 
  
+ -- Checks if an event exist in events map, returns a bool and receives event name
 (*@
-\label{eventExists:44}
+\label{eventExists:59}
 @*)
  private pure eventExists : String ==> bool
- eventExists(e) == (return e in set dom events);
+ eventExists(e) == (
+  return e in set dom events
+ );
  
+ /*
+  Returns set of nat for ticket ID's from an event, receives event name
+  Pre condition checks if event exists
+ */
 (*@
-\label{getEventTickets:47}
+\label{getEventTickets:68}
 @*)
  public pure getEventTickets : String ==> set of nat
- getEventTickets(e) == (return events(e).getTickets())
+ getEventTickets(e) == (
+  return events(e).getTickets()
+ )
  pre eventExists(e);
  
+ /*
+  Returns set of nat for ticket ID's from an event owned by a certain user
+  Receives event name and User name
+  Pre condition checks if event exists
+ */
 (*@
-\label{getEventTicketsUser:51}
+\label{getEventTicketsUser:79}
 @*)
  public getEventTicketsUser : String*String*TicketManager ==> set of nat
  getEventTicketsUser(e,u,tm) == (
@@ -82,17 +110,30 @@ operations
     then tickets := tickets union {ticket};
   );
   return tickets;
- );
- 
-(*@
-\label{getEventFillPercent:62}
-@*)
- public getEventFillPercent : String ==> rat
- getEventFillPercent(e) == (return events(e).getFillPercent();)
+ )
  pre eventExists(e);
  
+ /*
+  Returns rat for fill percentage in an event
+  Receives event name
+  Pre condition checks if event exists
+ */
 (*@
-\label{addTicket:66}
+\label{getEventFillPercent:96}
+@*)
+ public getEventFillPercent : String ==> rat
+ getEventFillPercent(e) == (
+  return events(e).getFillPercent();
+ )
+ pre eventExists(e);
+ 
+ /*
+  Adds a ticket to a specific event
+  Receives ticket ID and event name
+  Pre condition checks if event exists
+ */
+(*@
+\label{addTicket:107}
 @*)
  public addTicket : nat*String ==> ()
  addTicket(t,e) == (
@@ -100,17 +141,22 @@ operations
  )
  pre eventExists(e);
  
+ /*
+  Returns a rat for a specific event's earnings
+  Receives a string for event's name
+  Pre condition checks if event exists
+ */
 (*@
-\label{getEarnings:72}
+\label{getEarnings:118}
 @*)
  public getEarnings : String ==> rat
- getEarnings(e) == (return events(e).getEarnings();)
+ getEarnings(e) == (
+  return events(e).getEarnings();
+ )
  pre eventExists(e);
  
 
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end EventManager
 \end{vdmpp}
