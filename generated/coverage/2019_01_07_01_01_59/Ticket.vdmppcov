@@ -1,0 +1,50 @@
+class Ticket
+/*
+  Defines a ticket for an event and owned by a user.
+*/
+types
+	public String = seq of char;
+values
+instance variables
+	-- Ticket owner's name
+	private owner : String;
+	-- Ticket event's name
+	private event : String;
+	-- Ticket id
+	private id: nat;
+	-- Count used for ids 
+	static count : nat := 0;
+operations
+	-- Ticket constructor, receives owner's name and event's name
+	public Ticket: String * String ==> Ticket
+	Ticket(o,e) == (
+		owner := o; 
+		event := e; 
+		id := count; 
+		count := count + 1;
+		return self;
+	)
+	pre count >= 0
+	post owner = o and event = e and id = count - 1;
+	
+	-- Returns ticket owner's name
+	public pure getOwner : () ==> String
+	getOwner() == (
+		return owner;
+	);
+	
+	-- Returns ticket event's name
+	public pure getEvent : () ==> String
+	getEvent() == (
+		return event;
+	);
+	
+	-- Returns ticket's ID
+	public pure getID : () ==> nat
+	getID() == (
+		return id;
+	);
+			 
+functions
+traces
+end Ticket

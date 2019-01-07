@@ -1,0 +1,70 @@
+class TicketTest is subclass of Data
+/*
+  Contains the test cases for the Ticket and TicketManager classes.
+*/
+types
+values
+instance variables
+ e : Event := new Event("evento1", 15, 10, mk_Date(21,2,2019));
+ u : User := new User("dank", "memes");
+ em : EventManager := new EventManager({ "cenas" |-> e });
+ um : UserManager := new UserManager({"dank" |-> u});
+ tm : TicketManager := new TicketManager({|->});
+ t : Ticket := new Ticket("dank", "evento1");
+operations
+	/*
+	 Simulates assertion checking by reducing it to pre-condition checking.
+	 If 'arg' does not hold, a pre-condition violation will be signaled.
+	*/
+	private assertTrue: bool ==> ()
+		assertTrue(cond) == return
+		pre cond;
+	
+	-- Tests if getID returns the right value
+	private testGetID : () ==> ()
+	testGetID() == (
+		assertTrue(t.getID() = 1);
+	);
+	
+	-- Tests if getOwner returns the right value
+	private testGetOwner : () ==> ()
+	testGetOwner() == (
+		assertTrue(t.getOwner() = "dank");
+	);
+	
+	-- Tests if getEvent returns the event's name
+	private testGetEvent : () ==> ()
+	testGetEvent() == (
+		assertTrue(t.getEvent() = "evento1");
+	);
+	
+	-- Tests if ticketmanager's getTicket returns the right ticket
+	private testGetTicket : () ==> ()
+	testGetTicket() == (
+		dcl ticket_test : Ticket := new Ticket("dank", "evento2");
+		tm.addTicket(ticket_test);
+		assertTrue(tm.getTicket(7) = ticket_test);
+	);
+	
+	-- Adds and removes a ticket using ticketmanagers addTicket and removeTicket
+	-- Checks if the amount of tickets is the same before and after adding and removing
+	private testRemoveTicket : () ==> ()
+	testRemoveTicket() == (
+		dcl previousCard : nat := card dom tm.getTickets();
+		dcl ticketTest : Ticket := new Ticket("dank", "evento3");
+		tm.addTicket(ticketTest);
+		tm.removeTicket(ticketTest.getID());
+		assertTrue(card dom tm.getTickets() = previousCard);
+	);
+	
+	public static main: () ==> ()
+	main() == (
+		new TicketTest().testGetID();
+		new TicketTest().testGetOwner();
+		new TicketTest().testGetEvent();
+		new TicketTest().testRemoveTicket();
+		new TicketTest().testGetTicket();
+	);
+functions
+traces
+end TicketTest

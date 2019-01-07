@@ -1,0 +1,175 @@
+class UserManager
+/*
+  Represents a user.
+  Defines the variables and operations available to users.
+*/
+types
+	public String = seq of char;
+values
+instance variables
+	-- Name of current logged in user
+  private current_user : String := "";
+  -- Map of user's name to user
+	private users : map String to User;
+operations
+	/*
+		UserManager constructor
+		Receives a map user's name to User
+	*/
+	public UserManager : map String to User ==> UserManager
+	UserManager(uss) == (
+		users := uss;
+		return self;
+	);
+	
+	/*
+		Logins a user
+		Receives user's name and password
+		Returns true if successful
+		Precondition checks if user's name exists
+	*/
+	public login : String * String ==> bool
+	login(u,p) == (
+		if users(u).getPassword() = p
+		then (current_user:= u; return true)
+		else return false
+	)
+	pre u in set dom users;
+	
+	/*
+		Logs out current logged in user
+		Precondition checks if there's a user logged in
+	*/
+	public logout : () ==> ()
+	logout() == (
+		current_user := ""
+	)
+	pre isLoggedIn()
+	post current_user = "";
+	
+	/*
+		Registers a user in users map String to User
+		Receives name and password
+		Precondition checks if user's name doesn't already exist
+	*/
+	public register : String * String ==> ()
+	register(u,p) == (
+		users := users ++ {u |-> new User(u,p)};
+	)
+	pre u not in set dom users;
+	
+	/*
+		Adds a User to users map
+		Receives a User
+		Precondition checks if user's name doesn't already exist in map
+		Post condition checks if user was added
+	*/
+	public addUser : User ==> ()
+	addUser(user) == (
+		users := users ++ {user.getName() |-> user}
+	)
+	pre user.getName() not in set dom users
+	post users = users~ ++ {user.getName() |-> user};
+	
+	/*
+		Returns a user
+		Receives the name of the user to return
+		Precondition checks if name exists in users map
+	*/
+	public pure getUser : String ==> User
+	getUser(u) == (
+		return users(u);
+	)
+	pre u in set dom users;
+
+	/*
+		Returns the name of the current logged in user
+	*/
+	public pure getCurrentUser : () ==> String
+	getCurrentUser() == (
+		return current_user;
+	);
+	
+	/*
+		Returns users name to User map
+	*/
+	public pure getUsers : () ==> map String to User
+	getUsers() == (
+		return users;
+	);
+	
+	/*
+		Checks if there's a user logged in, returns true if yes
+	*/
+	private pure isLoggedIn : () ==> bool
+	isLoggedIn() == (
+		return current_user <> "" ;
+	);
+	
+	/*
+		Creates a ticket and adds it to ticketmanager, eventmanager and user's tickets
+		Receives the name of the ticket's event, the ticketmanager and the eventmanager
+		Precondition checks if there's a user logged in
+	*/
+	public buyTicket : String * TicketManager * EventManager ==> ()
+	buyTicket(e,tm,em) == (
+		dcl ticket : Ticket := new Ticket(current_user, em.getEvents()(e).getName());
+		tm.addTicket(ticket);
+		em.addTicket(ticket.getID(), e);
+		users(current_user).buyTicket(em.getEvents()(e).getTicketPrice(), ticket.getID()))
+	pre isLoggedIn();
+	
+	/*
+		Returns a set of nat for the logged in user's ticket's IDs
+		Precondition checks if there's a user logged in
+	*/
+	public pure getUserTickets :() ==> set of nat
+	getUserTickets() == (
+		return users(current_user).getTickets()
+	)
+	pre isLoggedIn();
+	
+	/*
+		Returns a set of nat for the logged in user's ticket's IDs for a certain event
+		Receives the name of the event and the ticketmanager
+		Precondition checks if there's a user logged in
+	*/
+	public getUserTicketsEvent : String * TicketManager ==> set of nat
+	getUserTicketsEvent(e,tm) == (
+		dcl tickets : set of nat := {};
+		for all ticket in set (users(current_user).getTickets()) do 
+		(
+			if tm.getTickets()(ticket).getEvent() = e
+				then tickets := tickets union {ticket};
+		);
+		return tickets;
+	)
+	pre isLoggedIn();
+	
+	/*
+		Adds 10 to an events popularity and removes 10 from logged in user's funds
+		Receives name of event to promote and eventmanager
+		Precondition checks if there's a user logged in
+	*/
+	public promoteEvent : String*EventManager ==> ()
+	promoteEvent(e,em) == (
+		em.getEvents()(e).promote();
+		users(current_user).removeFunds(10);
+	)
+	pre isLoggedIn();
+	
+	/*
+		Adds an event to user's event and to eventmanager
+		Receives an Event and the EventManager
+		Precondition checks if user is logged in
+	*/
+	public createEvent : Event*EventManager ==> ()
+	createEvent(e,em) == (
+		em.addEvent(e);
+		users(current_user).addEvent(e.getName());
+	)
+	pre isLoggedIn();
+
+functions
+traces
+end UserManager
