@@ -44,7 +44,8 @@ operations
 	logout() == (
 		current_user := ""
 	)
-	pre isLoggedIn();
+	pre isLoggedIn()
+	post current_user = "";
 	
 	/*
 		Registers a user in users map String to User
