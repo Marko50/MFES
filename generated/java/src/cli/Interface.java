@@ -80,6 +80,7 @@ public class Interface{
     	System.out.println(Util.CREATE_EVENT_OPTION + " Create an event.");
     	System.out.println(Util.SHOW_POPULAR_EVENTS_OPTION + " Show 5 more popular events.");
     	System.out.println(Util.EVENT_OCUPATION_OPTION + " Show event ocupation.");
+    	System.out.println(Util.ADD_FUNDS_OPTION + " Add funds.");
     	System.out.println(Util.LOGOUT_OPTION + " Logout.");
     	System.out.print("Opcao: ");
     	try {
@@ -118,8 +119,22 @@ public class Interface{
 			else if(option.equals(Util.SHOW_POPULAR_EVENTS_OPTION)) {
 				this.showPopularEvents();
 			}
+			else if(option.equals(Util.ADD_FUNDS_OPTION)) {
+				this.showAddFunds();
+			}
 		} catch (IOException e) {
 			this.state = Util.EXIT; 
+		}
+    }
+    
+    private void showAddFunds() {
+    	System.out.println("Amount: ");
+    	try {
+			String a = this.bufferedReader.readLine();
+			User user = (User) this.userManager.getUsers().get(this.userManager.getCurrentUser());
+			user.addFunds(Integer.parseInt(a));
+		} catch (IOException e) {
+			this.state = Util.EXIT;
 		}
     }
     
