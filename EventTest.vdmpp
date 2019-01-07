@@ -1,10 +1,10 @@
 class EventTest is subclass of Data
+/*
+  Contains the test cases for the Event and EventManager classes.
+*/
 types
--- TODO Define types here
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
  e : Event := new Event("evento1", 15, 10, mk_Date(10,1,2019));
  e2 : Event := new Event("evento2", 15, 10, mk_Date(29,2,2020));
  e3 : Event := new Event("evento3", 15, 10, mk_Date(29,4,2020));
@@ -14,31 +14,41 @@ instance variables
  um : UserManager := new UserManager({"dank" |-> u});
  tm : TicketManager := new TicketManager({|->});
 operations
--- TODO Define operations here
+	/*
+	 Simulates assertion checking by reducing it to pre-condition checking.
+	 If 'arg' does not hold, a pre-condition violation will be signaled.
+	*/
 	private assertTrue: bool ==> ()
 		assertTrue(cond) == return
 		pre cond;
-		
+	
+	-- Checks if getDate returns the right value
 	private testGetDate: () ==> ()
 	testGetDate() == (
 		assertTrue(e.getDate() = mk_Date(10,1,2019));
 	);	
 	
+	-- Checks if getName returns the right value
 	private testGetName: () ==> ()
 	testGetName() == (
 		assertTrue(e.getName() = "evento1");
 	);
 	
+	-- Checks if getCapacity returns the right value
+	-- Related to requirement 11
 	private testCapacity: () ==> ()
 	testCapacity() == (
 		assertTrue(e.getCapacity() = 15);
 	);
 	
+	-- Checks if getTicketPrice returns the right value
 	private testGetTicketPrice: () ==> ()
 	testGetTicketPrice() == (
 		assertTrue(e.getTicketPrice() = 10);
 	);
 	
+	-- Adds funds to a user then logs in and buys 2 tickets to "evento1"
+	-- Checks if the 2 tickets were added using getTickets
 	private testGetTickets : () ==> ()
 	testGetTickets() == (
 		u.addFunds(100);
@@ -48,6 +58,8 @@ operations
 		assertTrue(e.getTickets() = {8,9});
 	);
 	
+	-- Adds funds to a user then logs in and buys 1 tickets to "evento1"
+	-- Deletes the ticket then checks if no tickets were bought to the event
 	private testRemoveTicket : () ==> ()
 	testRemoveTicket() == (
 		u.addFunds(100);
@@ -57,6 +69,8 @@ operations
 		assertTrue(e.getTickets() = {});
 	);
 	
+	-- Checks if event's getFillPercent returns the right value
+	-- Related to Requirement 11
 	private testGetFillPercent : () ==> ()
 	testGetFillPercent() == (
 		u.addFunds(100);
@@ -65,6 +79,8 @@ operations
 		assertTrue(em.getEventFillPercent("evento1") = (1 / 15) * 100);
 	);
 	
+	-- Checks if getEarnings returns the right value
+	-- Related to Requirement 3
 	private testGetEarnings : () ==> ()
 	testGetEarnings() == (
 		u.addFunds(100);
@@ -73,17 +89,23 @@ operations
 		assertTrue(em.getEarnings("evento1") = 10);
 	);
 	
+	-- Promotes an event, checks if popularity increased using e.getPopularity
+	-- Related to Requirement 4
 	private testPromotion : () ==> ()
 	testPromotion() == (
 		e.promote();
 		assertTrue(e.getPopularity() = 10);
 	);
 	
+	-- Checks if event manager's getEvent returns the right event
 	private testManagerGetEvent : () ==> ()
 	testManagerGetEvent() == (
 		assertTrue(em.getEvent("evento1") = e);
 	);
 	
+	-- Adds an event using event manager
+	-- Checks if event was added using event manager's getEvent
+	-- Related to Requirement 9
 	private testManagerAddEvent : () ==> ()
 	testManagerAddEvent() == (
 		dcl eventTest : Event := new Event("eventTest",10,10,mk_Date(1,1,2021));
@@ -91,6 +113,8 @@ operations
 		assertTrue(em.getEvent("eventTest") = eventTest);
 	);
 	
+	-- Adds and then removes an event using event manager
+	-- Checks if amount of events stays the same after removing
 	private testManagerRemoveEvent : () ==> ()
 	testManagerRemoveEvent() == (
 		dcl eventTest : Event := new Event("eventTest",10,10,mk_Date(1,1,2021));
@@ -99,6 +123,7 @@ operations
 		assertTrue(card dom em.getEvents() = 4);
 	);
 	
+	-- Checks if manager's getEventTickets returns the right tickets from an event
 	private testManagerGetEventTickets : () ==> ()
 	testManagerGetEventTickets() == (
 		u.addFunds(100);
@@ -108,6 +133,8 @@ operations
 		assertTrue(card em.getEventTickets("evento1") = 2);
 	);
 	
+	-- Checks if manager's getEventsTicketsUsers returns the right ticket for an event from current user
+	-- Related to Requirement 8
 	private testManagerGetEventTicketsUser : () ==> ()
 	testManagerGetEventTicketsUser() == (
 		u.addFunds(100);
@@ -136,7 +163,5 @@ operations
 		new EventTest().testManagerGetEventTicketsUser();
 	);
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end EventTest

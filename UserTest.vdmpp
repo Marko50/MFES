@@ -1,10 +1,10 @@
 class UserTest is subclass of Data
+/*
+  Contains the test cases for the User and UserManager classes.
+*/
 types
--- TODO Define types here
 values
--- TODO Define values here
 instance variables
--- TODO Define instance variables here
  e : Event := new Event("evento1", 15, 10, mk_Date(10,1,2019));
  e2 : Event := new Event("evento2", 15, 10, mk_Date(29,2,2020));
  e3 : Event := new Event("evento3", 15, 10, mk_Date(29,4,2020));
@@ -15,22 +15,29 @@ instance variables
  tm : TicketManager := new TicketManager({|->});
  t : Ticket := new Ticket("dank", "evento1");
 operations
--- TODO Define operations here
+	/*
+	 Simulates assertion checking by reducing it to pre-condition checking.
+	 If 'arg' does not hold, a pre-condition violation will be signaled.
+	*/
 	private assertTrue: bool ==> ()
 		assertTrue(cond) == return
 		pre cond;
-		
+	
+	-- Tests if getName returns the correct value
 	private testGetName : () ==> ()
 	testGetName() == (
 		assertTrue(u.getName() = "dank");
 	);
 	
+	-- Adds funds to a user and checks if they were added using getFunds()
+	-- Related to Requirement 13 (addfunds) and Requirement 4 (getfunds)
 	private testAddFunds : () ==> ()
 	testAddFunds() == (
 		u.addFunds(100);
 		assertTrue(u.getFunds() = 100);
 	);
 	
+	-- Adds funds to a user and then removes part of them, then checks if the value is correct using getFunds()
 	private testRemoveFunds : () ==> ()
 	testRemoveFunds() == (
 		u.addFunds(100);
@@ -38,11 +45,14 @@ operations
 		assertTrue(u.getFunds() = 90);
 	);
 	
+	-- Tests is getPassword returns the correct value
 	private testGetPassword : () ==> ()
 	testGetPassword() == (
 		assertTrue(u.getPassword() = "memes");
 	);
 	
+	-- Adds two events to a user and then checks if they were added using getEvents()
+	-- Related to Requirement 9
 	private testAddEvent : () ==> ()
 	testAddEvent() == (
 		u.addEvent("eventTest1");
@@ -50,6 +60,7 @@ operations
 		assertTrue(u.getEvents() = {"eventTest1","eventTest2"});
 	);
 	
+	-- Adds two events to a user and then removes one, uses getEvents() to see if only the non-removed event shows
 	private testRemoveEvent : () ==> ()
 	testRemoveEvent() == (
 		u.addEvent("eventTest1");
@@ -58,6 +69,8 @@ operations
 		assertTrue(u.getEvents() = {"eventTest2"});
 	);
 	
+	-- Adds two tickets to a user and uses getTickets to check if they were added
+	-- Related to Requirement 7
 	private testAddTicket : () ==> ()
 	testAddTicket() == (
 		u.addTicket(0);
@@ -65,6 +78,7 @@ operations
 		assertTrue(u.getTickets() = {0,1});
 	);
 	
+	-- Adds two tickets to a user and then removes one, uses getTickets() to see if only the non-removed ticket shows
 	private testRemoveTicket : () ==> ()
 	testRemoveTicket() == (
 		u.addTicket(0);
@@ -73,6 +87,9 @@ operations
 		assertTrue(u.getTickets() = {1});
 	);
 	
+	-- Adds funds to a user and then buys a ticket with it. 
+	-- Checks if ticket was added and if cost of ticket was removed from funds
+	-- Related to requirement 7
 	private testBuyTicket : () ==> ()
 	testBuyTicket() == (
 		u.addFunds(100);
@@ -81,6 +98,8 @@ operations
 		assertTrue(u.getFunds() = 90);
 	);
 	
+	-- Logs in a user, logs out then Checks if current user is "".
+	-- Related to requirement 12
 	private testLogout : () ==> ()
 	testLogout() == (
 		assertTrue(um.login("dank", "memes"));
@@ -89,12 +108,16 @@ operations
 		assertTrue(um.getCurrentUser() = "");
 	);
 	
+	-- Registers a new user and  Tests if login with wrong password returns false and doesn't login
+	-- Related to Requirement 2 and Requirement 1
 	private testWrongPass : () ==> ()
 	testWrongPass() == (
 		um.register("testUser", "testPass");
 		assertTrue(not um.login("testUser", "wrongpass"));
 	);
 	
+	-- Adds funds to a user, logs in with it then promotes an event. Checks if event's popularity was increased
+	-- Related to Requirement 4
 	private testPromote : () ==> ()
 	testPromote() == (
 		u.addFunds(100);
@@ -103,16 +126,21 @@ operations
 		assertTrue(e3.getPopularity() = 10);
 	);
 	
+	-- Tests if getUser from user manager returns the right user.
 	private testGetUser : () ==> ()
 	testGetUser() == (
 		assertTrue(um.getUser("dank") = u);
 	);
 	
+	-- Tests if getUsers returns every user by checking one of them.
 	private testGetUsers : () ==> ()
 	testGetUsers() == (
 		assertTrue(um.getUsers()("dank") = u);
 	);
 	
+	-- Buys a ticket with a user then checks if ticket was added to user using usermanager getUserTickets
+	-- Also checks if user funds were lowered
+	-- Related to Requirement 5
 	private testGetUserTickets : () ==> ()
 	testGetUserTickets() == (
 		assertTrue(um.login("dank","memes"));
@@ -122,6 +150,9 @@ operations
 		assertTrue(u.getFunds() = 90);
 	);
 	
+	-- Buys 3 tickets to "evento4" and 1 ticket to "evento3" using one user
+	-- Uses usermanager getUserTicketsEvent to check if the logged in user's 3 tickets to "evento4" are returned.
+	-- Related to Requirement 8
 	private testGetUserTicketsEvent : () ==> ()
 	testGetUserTicketsEvent() == (
 		assertTrue(um.login("dank","memes"));
@@ -133,6 +164,9 @@ operations
 		assertTrue(um.getUserTicketsEvent("evento4", tm) = {35, 36, 37});
 	);
 	
+	-- Creates a test user and uses usermanager's addUser to add it
+	-- Checks if it was added using getUser
+	-- Related with Requirement 1
 	private testAddUser : () ==> ()
 	testAddUser() == (
 		dcl newUser : User := new User("addUserTest", "pass");
@@ -140,6 +174,10 @@ operations
 		assertTrue(um.getUser("addUserTest") = newUser);
 	);
 	
+	-- Creates a test event, logs in a user and uses usermanager createEvent to add the test event
+	-- Checks if it was added by using event manager's getEvent and if it was added to the right user
+	-- using usermanager's getUser(name).getEvents 
+	-- Related to Requirement 9
 	private testCreateEvent : () ==> ()
 	testCreateEvent() == (
 		dcl newEvent : Event := new Event("testEvent", 10, 10, mk_Date(10,10,2019));
@@ -171,7 +209,5 @@ operations
 		new UserTest().testCreateEvent();
 	);
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
 end UserTest
